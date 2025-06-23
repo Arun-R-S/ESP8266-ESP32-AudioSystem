@@ -1,19 +1,20 @@
 #include "AppWiFiManager.h"
+#include <ESP8266WiFi.h>
 
-void AppWiFiManager::begin(const char* hostname) {
-#if defined(ESP8266)
+AppWiFiManager::AppWiFiManager(AsyncWebServer &server)
+  : _server(server) {}
+
+void AppWiFiManager::begin() {
   WiFi.mode(WIFI_STA);
-#elif defined(ESP32)
-  WiFi.mode(WIFI_MODE_STA);
-#endif
-  WiFi.begin();
-  WiFi.setHostname(hostname);
+  WiFi.begin("yourSSID", "yourPASSWORD");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi connected: " + WiFi.localIP().toString());
+  _server.begin();
 }
 
-bool AppWiFiManager::isConnected() {
-  return WiFi.status() == WL_CONNECTED;
-}
-
-String AppWiFiManager::getLocalIP() {
-  return WiFi.localIP().toString();
+void AppWiFiManager::handle() {
+  // No-op for now; use for future events
 }

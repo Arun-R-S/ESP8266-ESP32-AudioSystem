@@ -1,28 +1,17 @@
-#ifndef DASHBOARD_SERVICE_H
-#define DASHBOARD_SERVICE_H
-
-#include <ESPAsyncWebServer.h>
+#pragma once
 #include <ESPDash.h>
-#include "AudioIC.h"
+#include "drivers/AudioIC.h"
 
 class DashboardService {
-public:
+  public:
     DashboardService(AsyncWebServer &server, AudioIC &audioIC);
-
     void begin();
-    void updateVolume(int volume);
-    void updateBass(int bass);
-    void updateTreble(int treble);
+    void update();
 
-private:
-    AsyncWebServer &_server;
-    ESPDash _dash;
+  private:
+    ESPDash _dashboard;
+    Card _volCard;
+    Card _bassCard;
+    Card _trebleCard;
     AudioIC &_audioIC;
-    Card *_volCard;
-    Card *_bassCard;
-    Card *_trebleCard;
-
-    void setupCards();
 };
-
-#endif // DASHBOARD_SERVICE_H
