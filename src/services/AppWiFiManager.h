@@ -1,5 +1,5 @@
-#ifndef WIFI_MANAGER_H
-#define WIFI_MANAGER_H
+#ifndef APP_WIFI_MANAGER_H
+#define APP_WIFI_MANAGER_H
 
 #include <Arduino.h>
 
@@ -9,11 +9,11 @@
   #include <WiFi.h>
 #endif
 
-class WiFiManager {
+class AppWiFiManager {
 public:
     static void begin(const char* hostname = "ESP-AudioSystem");
     static bool isConnected();
     static String getLocalIP();
 };
 
-#endif // WIFI_MANAGER_H
+#endif // APP_WIFI_MANAGER_H
