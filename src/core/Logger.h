@@ -19,6 +19,7 @@ class Logger {
     static void warning(const char* format, ...);
     static void info(const char* format, ...);
     static void verbose(const char* format, ...);
+    static void debug(const char* format, ...);
 
   private:
     static LogLevel currentLogLevel;

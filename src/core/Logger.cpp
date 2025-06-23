@@ -50,3 +50,17 @@ void Logger::verbose(const char* format, ...) {
     log(LOG_LEVEL_VERBOSE, "VERBOSE", format, args);
     va_end(args);
 }
+
+void Logger::debug(const char* format, ...) {
+    if (currentLogLevel < LOG_LEVEL_DEBUG) return;
+
+    Serial.print("[DEBUG] ");
+    va_list args;
+    va_start(args, format);
+    char buffer[256];
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    Serial.print(buffer);
+    va_end(args);
+    Serial.println();
+}
+
