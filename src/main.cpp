@@ -1,3 +1,4 @@
+#include "board/BoardFactory.h"
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <AsyncTCP.h>
@@ -10,9 +11,12 @@ AsyncWebServer server(80);
 AudioIC audioIC;
 DashboardService dashboard(server, audioIC);
 
+BoardInterface* board;
+
 void setup() {
     Serial.begin(115200);
-
+    board = createBoard();
+    Serial.println("Running on: " + String(board->getBoardName()));
     WiFi.begin("YourSSID", "YourPassword");
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
