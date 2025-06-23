@@ -12,6 +12,7 @@ public:
     bool begin();
     void clear();
     void printLine(uint8_t line, const String& message);
+    void printLine(uint8_t row, const String& message);
     void showWelcomeMessage();
     void showError(const String& message);
 

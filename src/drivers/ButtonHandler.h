@@ -5,15 +5,19 @@
 using namespace ace_button;
 
 #include "../core/Logger.h"
-#include "LCDDisplay.h"
 #include "AudioIC.h"
+#include "LCDDisplay.h"
 
+// Fix D1/D2 not defined issue
 #if defined(ESP8266)
-  #define BUTTON1_PIN D1
-  #define BUTTON2_PIN D2
-#else
+  #define BUTTON1_PIN 5  // D1 = GPIO5 on NodeMCU
+  #define BUTTON2_PIN 4  // D2 = GPIO4
+#elif defined(ESP32)
   #define BUTTON1_PIN 21
   #define BUTTON2_PIN 22
+#else
+  #define BUTTON1_PIN 2
+  #define BUTTON2_PIN 3
 #endif
 
 class ButtonHandler {
@@ -29,8 +33,8 @@ private:
   static LCDDisplay* _lcd;
 
   ButtonConfig _config;
-  AceButton _btn1;
-  AceButton _btn2;
+  AceButton _button1;
+  AceButton _button2;
 };
 
 #endif
