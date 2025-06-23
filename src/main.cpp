@@ -1,24 +1,29 @@
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
-#include <ESPDash.h>
-
-#include "drivers/AudioIC.h"
-#include "services/AppWiFiManager.h"
 #include "services/DashboardService.h"
+#include "audio/AudioIC.h"
 
+// Create server instance
 AsyncWebServer server(80);
 AudioIC audioIC;
-AppWiFiManager wifiManager(server);
-DashboardService dashboardService(server, audioIC);
+DashboardService dashboard(server, audioIC);
 
 void setup() {
-  Serial.begin(115200);
-  audioIC.begin();
-  wifiManager.begin();
-  dashboardService.begin();
+    Serial.begin(115200);
+
+    WiFi.begin("YourSSID", "YourPassword");
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("\nWiFi Connected");
+
+    dashboard.setup();
 }
 
 void loop() {
-  wifiManager.handle();
-  dashboardService.update();
+    dashboard.update();
+    delay(1000);
 }

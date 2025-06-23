@@ -1,17 +1,28 @@
-#pragma once
+// DashboardService.h
+#ifndef DASHBOARD_SERVICE_H
+#define DASHBOARD_SERVICE_H
+
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
 #include <ESPDash.h>
-#include "drivers/AudioIC.h"
+#include "../audio/AudioIC.h"
 
 class DashboardService {
-  public:
+public:
     DashboardService(AsyncWebServer &server, AudioIC &audioIC);
-    void begin();
+
+    void setup();
     void update();
 
-  private:
-    ESPDash _dashboard;
-    Card _volCard;
-    Card _bassCard;
-    Card _trebleCard;
+private:
+    AsyncWebServer &_server;
     AudioIC &_audioIC;
+    ESPDash _dash;
+
+    // Cards
+    Card *_volCard;
+    Card *_bassCard;
+    Card *_trebleCard;
 };
+
+#endif
