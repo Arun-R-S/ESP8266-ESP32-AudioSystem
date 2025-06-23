@@ -1,25 +1,20 @@
+// Logger.h
 #pragma once
-#include <Arduino.h>
+
+enum LogLevel {
+    LOG_NONE = 0,
+    LOG_ERROR = 1,
+    LOG_WARNING = 2,
+    LOG_INFO = 3
+};
 
 class Logger {
-public:
-  void begin(unsigned long baud = 115200) {
-    Serial.begin(baud);
-    delay(100); // Give time for Serial to initialize
-  }
+  public:
+    static void setLogLevel(LogLevel level);
+    static void error(const char* msg);
+    static void warning(const char* msg);
+    static void info(const char* msg);
 
-  void info(const char* message) {
-    Serial.print("[INFO] ");
-    Serial.println(message);
-  }
-
-  void debug(const char* message) {
-    Serial.print("[DEBUG] ");
-    Serial.println(message);
-  }
-
-  void error(const char* message) {
-    Serial.print("[ERROR] ");
-    Serial.println(message);
-  }
+  private:
+    static LogLevel currentLevel;
 };
