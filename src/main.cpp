@@ -6,7 +6,7 @@
 #include "drivers/AudioIC.h"
 #include "drivers/LCDDisplay.h"
 #include "drivers/ButtonHandler.h"
-#include "services/WiFiManager.h"
+#include "services/AppWiFiManager.h"
 #include "services/DashboardService.h"
 
 // === Platform Select ===

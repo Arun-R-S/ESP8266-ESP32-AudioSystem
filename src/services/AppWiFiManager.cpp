@@ -1,40 +1,19 @@
-#include "WiFiManager.h"  // Your renamed header
-#include <core/Logger.h>
-
-#if defined(ESP8266)
-  #include <DNSServer.h>
-  #include <ESP8266WebServer.h>
-  #include <WiFiManager.h>
-#elif defined(ESP32)
-  #include <DNSServer.h>
-  #include <WebServer.h>
-  #include <WiFiManager.h>
-#endif
-
-namespace {
-  ::WiFiManager wifiManagerLib;
-}
+#include "AppWiFiManager.h"
 
 void AppWiFiManager::begin(const char* hostname) {
-    Logger::info("WiFiManager: Starting...");
-
-    WiFi.mode(WIFI_STA);
-    WiFi.setHostname(hostname);
-
-    if (!wifiManagerLib.autoConnect(hostname)) {
-        Logger::error("WiFiManager: Failed to connect. Starting config portal...");
-        delay(3000);
-        ESP.restart();
-    }
-
-    Logger::info("WiFiManager: Connected successfully.");
-    Logger::info("WiFiManager: IP Address: %s", WiFi.localIP().toString().c_str());
+#if defined(ESP8266)
+  WiFi.mode(WIFI_STA);
+#elif defined(ESP32)
+  WiFi.mode(WIFI_MODE_STA);
+#endif
+  WiFi.begin();
+  WiFi.setHostname(hostname);
 }
 
 bool AppWiFiManager::isConnected() {
-    return WiFi.status() == WL_CONNECTED;
+  return WiFi.status() == WL_CONNECTED;
 }
 
 String AppWiFiManager::getLocalIP() {
-    return WiFi.localIP().toString();
+  return WiFi.localIP().toString();
 }

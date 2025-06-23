@@ -11,9 +11,9 @@
 
 class AppWiFiManager {
 public:
-    static void begin(const char* hostname = "ESP-AudioSystem");
-    static bool isConnected();
-    static String getLocalIP();
+  static void begin(const char* hostname = "ESP-AudioSystem");
+  static bool isConnected();
+  static String getLocalIP();
 };
 
 #endif // APP_WIFI_MANAGER_H
