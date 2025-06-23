@@ -1,11 +1,18 @@
-#include "AudioControllerApp.h"
+#include <Arduino.h>
+#include "ButtonHandler.h"
 
-AudioControllerApp app;
+ButtonHandler buttonHandler;
+
+void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.print(F("Button Event: "));
+  Serial.println(eventType);
+}
 
 void setup() {
-  app.begin();
+  Serial.begin(115200);
+  buttonHandler.begin(handleButtonEvent);
 }
 
 void loop() {
-  app.loop();
+  buttonHandler.checkButtons();
 }
