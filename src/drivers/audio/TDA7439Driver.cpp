@@ -1,7 +1,9 @@
 #include "TDA7439Driver.h"
 #include "../../core/Logger.h"
 
-TDA7439Driver::TDA7439Driver(I2CBus& bus, uint8_t address) : _i2c(bus), _address(address) {}
+TDA7439Driver::TDA7439Driver(I2CBus& bus, uint8_t address)
+    : _i2c(bus), _i2cAddress(address) {   // ✅ Reference MUST be initialized here
+}
 
 bool TDA7439Driver::Init() {
     //Logger::Info("Audio", "TDA7439 initialized at address 0x%02X", _address);

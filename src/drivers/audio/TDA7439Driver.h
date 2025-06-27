@@ -4,8 +4,7 @@
 
 class TDA7439Driver : public AudioDriver {
 public:
-    //TDA7439Driver(I2CBus& bus, uint8_t address);
-    TDA7439Driver(I2CBus& bus, uint8_t address = 0x44);  // Default I2C address
+    TDA7439Driver(I2CBus& bus, uint8_t address = 0x44);
     bool Init() override;
     void SetVolume(int level) override;
     void SetInput(uint8_t input) override;
