@@ -10,6 +10,7 @@ bool I2CBus::Init() {
     AddLogInfo("I2CBus","Wire Init");
 #elif defined(ESP32)
     Wire.begin(_sda, _scl);
+    AddLogInfo("I2CBus","Wire Init");
 #endif
     return true;
 }
@@ -40,10 +41,11 @@ void I2CBus::Scan() {
             count++;
         }
     }
-
+    AddLogDebugMore("I2CBus Scan","Count -> %d",count);
     if (count == 0) {
         AddLogWarn("I2CBus", "No I2C devices found.");
     } else {
         AddLogInfo("I2CBus", "Scan complete. %d device(s) found.", count);
     }
+    AddLogDebug("I2CBus", "I2C Scan function completed.");
 }

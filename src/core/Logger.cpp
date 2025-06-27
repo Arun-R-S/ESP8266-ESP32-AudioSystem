@@ -4,7 +4,7 @@
 // =======================
 // Default Log Level
 // =======================
-uint8_t CurrentLogLevel = LOG_LEVEL_INFO;
+uint8_t CurrentLogLevel = LOG_LEVEL_DEBUG_MORE;
 
 // =======================
 // AddLog Implementation
@@ -24,12 +24,13 @@ void Logger(uint8_t level, const char* tag, const char* fmt, ...) {
     const char* levelStr = "";
 
     switch (level) {
-        case LOG_LEVEL_ERROR:      levelStr = "ERROR"; break;
-        case LOG_LEVEL_INFO:       levelStr = "INFO";  break;
-        case LOG_LEVEL_DEBUG:      levelStr = "DEBUG"; break;
+        case LOG_LEVEL_ERROR:      levelStr = "ERROR";  break;
+        case LOG_LEVEL_INFO:       levelStr = "INFO";   break;
+        case LOG_LEVEL_DEBUG:      levelStr = "DEBUG";  break;
         case LOG_LEVEL_DEBUG_MORE: levelStr = "DEBUG+"; break;
-        case LOG_LEVEL_WARN: levelStr = "WARN"; break;
-        default:                   levelStr = "LOG";   break;
+        case LOG_LEVEL_WARN:       levelStr = "WARN";   break;
+        case LOG_LEVEL_SECRET:     levelStr = "SECRET"; break;
+        default:                   levelStr = "LOG";    break;
     }
 
     // Output format: [INFO] Tag: message
