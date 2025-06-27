@@ -1,55 +1,37 @@
 #include "Logger.h"
 #include <stdarg.h>
-#include <stdio.h>
 
-void Logger::Init() {
-    Serial.begin(115200);
-    delay(100);
-}
+// =======================
+// Default Log Level
+// =======================
+uint8_t CurrentLogLevel = LOG_LEVEL_INFO;
 
-void Logger::Log(LogLevel level, const char* tag, const char* fmt, ...) {
-    const char* levelStr = "";
-    switch (level) {
-        case LogLevel::Debug: levelStr = "DEBUG"; break;
-        case LogLevel::Info:  levelStr = "INFO";  break;
-        case LogLevel::Warn:  levelStr = "WARN";  break;
-        case LogLevel::Error: levelStr = "ERROR"; break;
+// =======================
+// AddLog Implementation
+// =======================
+void Logger(uint8_t level, const char* tag, const char* fmt, ...) {
+    if (level > CurrentLogLevel) {
+        return; // Skip lower-level logs
     }
 
-    char buffer[256]; // Temp buffer for formatted string
+    char messageBuffer[256];
 
     va_list args;
     va_start(args, fmt);
-    vsnprintf(buffer, sizeof(buffer), fmt, args);
+    vsnprintf(messageBuffer, sizeof(messageBuffer), fmt, args);
     va_end(args);
 
-    Serial.printf("[%s][%s] %s\n", levelStr, tag, buffer);
-}
+    const char* levelStr = "";
 
-void Logger::Debug(const char* tag, const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    Log(LogLevel::Debug, tag, fmt, args);
-    va_end(args);
-}
+    switch (level) {
+        case LOG_LEVEL_ERROR:      levelStr = "ERROR"; break;
+        case LOG_LEVEL_INFO:       levelStr = "INFO";  break;
+        case LOG_LEVEL_DEBUG:      levelStr = "DEBUG"; break;
+        case LOG_LEVEL_DEBUG_MORE: levelStr = "DEBUG+"; break;
+        case LOG_LEVEL_WARN: levelStr = "WARN"; break;
+        default:                   levelStr = "LOG";   break;
+    }
 
-void Logger::Info(const char* tag, const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    Log(LogLevel::Info, tag, fmt, args);
-    va_end(args);
-}
-
-void Logger::Warn(const char* tag, const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    Log(LogLevel::Warn, tag, fmt, args);
-    va_end(args);
-}
-
-void Logger::Error(const char* tag, const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    Log(LogLevel::Error, tag, fmt, args);
-    va_end(args);
+    // Output format: [INFO] Tag: message
+    Serial.printf("[%s] %s: %s\n", levelStr, tag, messageBuffer);
 }

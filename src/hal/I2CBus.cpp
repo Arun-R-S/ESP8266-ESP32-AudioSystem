@@ -7,7 +7,7 @@ I2CBus::I2CBus(uint8_t sda, uint8_t scl) : _sda(sda), _scl(scl) {}
 bool I2CBus::Init() {
 #ifdef ESP8266
     Wire.begin(_sda, _scl);
-    Logger::Info("I2CBus","Wire Init");
+    AddLogInfo("I2CBus","Wire Init");
 #elif defined(ESP32)
     Wire.begin(_sda, _scl);
 #endif

@@ -13,11 +13,11 @@ public:
     void SetTreble(int level) override;
     void SaveState() override;
     void LoadState() override;
-    uint8_t getAddress();
 
 private:
     I2CBus& _i2c;
     uint8_t _address;
     uint8_t _i2cAddress;
+    uint8_t getAddress() { return _i2cAddress; }
     void WriteRegister(uint8_t reg, uint8_t value);
 };

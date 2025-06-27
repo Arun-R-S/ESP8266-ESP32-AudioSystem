@@ -7,37 +7,37 @@ DynamicJsonDocument SettingsManager::doc(2048);
 
 bool SettingsManager::Load() {
     if (!LittleFS.begin()) {
-        Logger::Error("Failed to mount LittleFS");
+        AddLogError("SettingsManager","Failed to mount LittleFS");
         return false;
     }
 
     File file = LittleFS.open(filename, "r");
     if (!file) {
-        Logger::Warn("Settings file not found, using defaults");
+        AddLogWarn("SettingsManager","Settings file not found, using defaults");
         return false;
     }
 
     DeserializationError err = deserializeJson(doc, file);
     file.close();
     if (err) {
-        Logger::Error("Failed to parse settings");
+        AddLogError("SettingsManager","Failed to parse settings");
         return false;
     }
 
-    Logger::Info("Settings loaded");
+    AddLogInfo("SettingsManager","Settings loaded");
     return true;
 }
 
 bool SettingsManager::Save() {
     File file = LittleFS.open(filename, "w");
     if (!file) {
-        Logger::Error("Failed to open settings file for writing");
+        AddLogError("SettingsManager","Failed to open settings file for writing");
         return false;
     }
 
     serializeJson(doc, file);
     file.close();
-    Logger::Info("Settings saved");
+    AddLogInfo("SettingsManager","Settings saved");
     return true;
 }
 
