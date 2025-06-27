@@ -14,6 +14,7 @@ public:
     void SetTreble(int level) override;
     void SaveState() override;
     void LoadState() override;
+    uint8_t getAddress();
 
 private:
     I2CBus& _i2c;
