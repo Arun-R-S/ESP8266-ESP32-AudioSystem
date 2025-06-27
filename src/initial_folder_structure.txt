@@ -1,0 +1,18 @@
+/src
+ ├── /core               → System core: settings, Wi-Fi, logging, OTA, watchdog, scheduler
+ ├── /hal                → Hardware Abstraction Layer (I2C, GPIO, EEPROM, SPI, ADC/DAC)
+ ├── /drivers            → All device-specific drivers (audio ICs, LCD, buttons, relays, etc.)
+ │    ├── /audio         → Audio IC drivers (TDA7439, PT2313, PT2322, etc.)
+ │    ├── /display       → LCD drivers (I2C LCD, OLED, TFT, future touch UI, etc.)
+ │    ├── /input         → Button, encoder, IR remote, capacitive touch
+ │    └── /misc          → Other peripherals like relays, LEDs, sensors (future expansion)
+ ├── /services           → High-level software services (Web UI, REST API, OTA, MQTT, mDNS)
+ ├── /ui                 → Local UI rendering and input handling
+ │    ├── /lcd           → LCD menus, pages, rendering logic
+ │    └── /buttons       → Button event handling, debounce, encoder rotation, click/long press
+ ├── /presets            → Preset storage logic (EQ profiles, input configs, loudness profiles)
+ ├── /config             → Default configurations, schemas, user pin mappings
+ ├── /filesystem         → SPIFFS/LittleFS file handling utilities
+ ├── /utils              → Generic helper functions, string processing, logging formatters, etc.
+ ├── /boards             → Board-specific abstraction if needed (ESP8266, ESP32, future boards)
+ └── main.cpp            → Entry point; initializes everything, main loop handler
