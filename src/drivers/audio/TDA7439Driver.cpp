@@ -4,7 +4,8 @@
 TDA7439Driver::TDA7439Driver(I2CBus& bus, uint8_t address) : _i2c(bus), _address(address) {}
 
 bool TDA7439Driver::Init() {
-    Logger::Info("Audio", "TDA7439 initialized at address 0x%02X", _address);
+    //Logger::Info("Audio", "TDA7439 initialized at address 0x%02X", _address);
+    Logger::Info("Audio", "TDA7439 initialized at address 0x%02X", i2cAddress); 
     return true;
 }
 
@@ -36,6 +37,10 @@ void TDA7439Driver::SaveState() {
 
 void TDA7439Driver::LoadState() {
     // Load previous settings
+}
+
+uint8_t TDA7439Driver::getAddress() {
+    return _i2cAddress;
 }
 
 void TDA7439Driver::WriteRegister(uint8_t reg, uint8_t value) {

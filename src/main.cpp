@@ -1,6 +1,6 @@
+#include <Arduino.h>
 #include "core/App.h"
 
-// ESP standard functions
 void setup() {
     App::Setup();
 }

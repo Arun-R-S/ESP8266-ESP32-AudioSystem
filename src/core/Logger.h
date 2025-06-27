@@ -11,4 +11,9 @@ public:
     static void Info(const char* tag, const char* fmt, ...);
     static void Warn(const char* tag, const char* fmt, ...);
     static void Error(const char* tag, const char* fmt, ...);
+    
+    static void Error(const char* msg) { Error("LOG", "%s", msg); }
+    static void Warn(const char* msg) { Warn("LOG", "%s", msg); }
+    static void Info(const char* msg) { Info("LOG", "%s", msg); }
+
 };
