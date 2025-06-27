@@ -5,7 +5,6 @@
 
 bool CmdI2C(const String &payload)
 {
-
     if (!payload.isEmpty())
     {
         String cmd = payload;
