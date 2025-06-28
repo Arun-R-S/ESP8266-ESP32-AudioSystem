@@ -20,8 +20,9 @@ uint8_t AudioService::GetVolume() {
 }
 
 void AudioService::ApplyVolume() {
+    AddLogDebug("AudioService", "Apply Volume Start");
     AudioDriverManager::Instance().GetActiveDriver()->SetVolume(Settings.audio.volume);
-    
+    AddLogDebug("AudioService", "Apply Volume End");
 }
 
 // Same pattern for input

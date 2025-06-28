@@ -12,14 +12,14 @@ SettingsManager& SettingsManager::Instance() {
 }
 
 void SettingsManager::SaveSettings() {
-    AddLogDebug(this->Module_TAG, "Saving Settings");
+    AddLogDebug("SettingsManager", "Saving Settings");
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
     FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
     FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
 }
 
 void SettingsManager::ResetToDefault() {
-    AddLogInfo(this->Module_TAG, "Resetting to default");
+    AddLogInfo("SettingsManager", "Resetting to default");
     memset(&Settings, 0, sizeof(Settings));
     Settings.audio.volume = 25;
     Settings.audio.input = 1;
@@ -28,9 +28,24 @@ void SettingsManager::ResetToDefault() {
     strcpy(Settings.system.deviceName, "ESP-Audio");
 }
 
+void SettingsManager::GetSettings(){
+    this->_responseManager.Clear();
+    this->_responseManager.Append("{\"audio\":{");
+    this->_responseManager.Append("\"volume\":%d,", Settings.audio.volume);
+    this->_responseManager.Append("\"input\":%d,", Settings.audio.input);
+    this->_responseManager.Append("\"loudness\":%s,", Settings.audio.loudness ? "true" : "false");
+    this->_responseManager.Append("\"activeDriver\":\"%s\"},", Settings.audio.activeDriver);
+
+    this->_responseManager.Append("\"system\":{\"deviceName\":\"%s\"},", Settings.system.deviceName);
+
+    this->_responseManager.Append("\"crc32\":\"0x%08X\"}", Settings.crc32);
+
+    AddLogInfo("Settings", "JSON: %s", this->_responseManager.Get());
+}
+
 bool SettingsManager::LoadSettings() {
-    AddLogInfo(this->Module_TAG, "Load Settings...");
-    AddLogDebug(this->Module_TAG, "Retrieving from Flash...");
+    AddLogInfo("SettingsManager", "Load Settings...");
+    AddLogDebug("SettingsManager", "Retrieving from Flash...");
     SettingsStruct temp;
     if (FlashRead(SETTINGS_MAIN_ADDR, &temp, sizeof(temp))) {
         uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
@@ -39,8 +54,8 @@ bool SettingsManager::LoadSettings() {
             return true;
         }
     }
-    AddLogDebug(this->Module_TAG, "Retrieving from Flash fails...");
-    AddLogDebug(this->Module_TAG, "Retrieving from backup...");
+    AddLogDebug("SettingsManager", "Retrieving from Flash fails...");
+    AddLogDebug("SettingsManager", "Retrieving from backup...");
     // Try backup
     if (FlashRead(SETTINGS_BACKUP_ADDR, &temp, sizeof(temp))) {
         uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
@@ -50,8 +65,8 @@ bool SettingsManager::LoadSettings() {
             return true;
         }
     }
-    AddLogDebug(this->Module_TAG, "Retrieving from backup fails...");
-    AddLogError(this->Module_TAG, "Failed to load settings....");
+    AddLogDebug("SettingsManager", "Retrieving from backup fails...");
+    AddLogError("SettingsManager", "Failed to load settings....");
     // If both fail, reset to defaults
     ResetToDefault();
     SaveSettings();

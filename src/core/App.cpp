@@ -7,6 +7,8 @@
 #include "core/CommandProcessor.h"
 #include "handlers/I2CCommands.h"
 #include "handlers/AudioCommands.h"
+#include "handlers/SystemCommands.h"
+#include "handlers/SettingsCommands.h"
 #include "SettingsManager.h"
 #include "ResponseManager.h"
 
@@ -25,24 +27,12 @@ void App::Setup() {
     delay(300);
     i2c.Init();
     SettingsManager::Instance().LoadSettings();
-    responseManger.Clear();
-    responseManger.Append("{\"audio\":{");
-    responseManger.Append("\"volume\":%d,", Settings.audio.volume);
-    responseManger.Append("\"input\":%d,", Settings.audio.input);
-    responseManger.Append("\"loudness\":%s,", Settings.audio.loudness ? "true" : "false");
-    responseManger.Append("\"activeDriver\":\"%s\"},", Settings.audio.activeDriver);
-
-    responseManger.Append("\"system\":{\"deviceName\":\"%s\"},", Settings.system.deviceName);
-
-    responseManger.Append("\"crc32\":\"0x%08X\"}", Settings.crc32);
-
-    AddLogInfo("Settings", "JSON: %s", responseManger.Get());
-   
     
-
     // Register command sets
     RegisterI2CCommands(registry);
     RegisterAudioCommands(registry);
+    RegisterSystemCommands(registry);
+    RegisterSettingsCommands(registry);
 }
 
 void App::Loop() {

@@ -37,6 +37,7 @@ bool FlashWrite(uint32_t address, const void *data, size_t len)
 
 uint32_t CalculateCRC32(const uint8_t *data, size_t length)
 {
+    AddLogCore("FlashFunctions","CalculateCRC32 Enter");
     uint32_t crc = 0xFFFFFFFF;
     while (length--)
     {
@@ -44,5 +45,7 @@ uint32_t CalculateCRC32(const uint8_t *data, size_t length)
         for (uint8_t i = 0; i < 8; i++)
             crc = (crc >> 1) ^ (0xEDB88320UL & -(crc & 1));
     }
+    AddLogCore("FlashFunctions","CalculateCRC32 Exit");
+    AddLogCore("FlashFunctions","return value %d",crc);
     return ~crc;
 }

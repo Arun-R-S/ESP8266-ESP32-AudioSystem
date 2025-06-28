@@ -16,9 +16,13 @@ bool I2CBus::Init() {
 }
 
 bool I2CBus::Write(uint8_t address, uint8_t reg, uint8_t data) {
+    AddLogCore("I2CBus","Write at address 0x%02X and reg 0x%02X = 0x%02X",address, reg, data);
+    AddLogCore("I2CBus","Begin Tansmission");
     Wire.beginTransmission(address);
+    AddLogCore("I2CBus","Write");
     Wire.write(reg);
     Wire.write(data);
+    AddLogCore("I2CBus","Will end Transmission");
     return Wire.endTransmission() == 0;
 }
 

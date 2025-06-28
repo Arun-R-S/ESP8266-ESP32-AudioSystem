@@ -1,18 +1,19 @@
 #pragma once
 
 #include "SettingsStruct.h"
+#include "ResponseManager.h"
 
 class SettingsManager {
 public:
-    const char* Module_TAG = "SettingsManager";
-    const char* Friendly_TAG = "Settings";
     bool LoadSettings();
     void SaveSettings();
     void ResetToDefault();
+    void GetSettings();
     SettingsStruct Settings;
     static SettingsManager& Instance();
 
 private:
+    ResponseManager _responseManager;
     SettingsManager() = default;
     SettingsManager(const SettingsManager&) = delete;
     void operator=(const SettingsManager&) = delete;

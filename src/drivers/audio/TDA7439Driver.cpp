@@ -12,6 +12,7 @@ bool TDA7439Driver::Init() {
 }
 
 void TDA7439Driver::SetVolume(uint8_t level) {
+    AddLogCore("TDA7439Driver", "Set Volume %d",level);
     uint8_t val = constrain(31 - level, 0, 31);
     WriteRegister(0x00, val);
     AddLog("Audio", "Volume set to %d", level);
@@ -46,6 +47,7 @@ void TDA7439Driver::LoadState() {
 }
 
 void TDA7439Driver::WriteRegister(uint8_t reg, uint8_t value) {
+    AddLogCore("TDA7439","Write reg 0x%02X = 0x%02X", reg, value);
     _i2c.Write(_i2cAddress,reg,value);
 
     AddLogDebug("TDA7439", "Write reg 0x%02X = 0x%02X", reg, value);
