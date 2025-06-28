@@ -1,5 +1,6 @@
 #include "Logger.h"
 #include <stdarg.h>
+#include "core/SettingsManager.h"
 
 // =======================
 // Default Log Level
@@ -10,7 +11,7 @@ uint8_t CurrentLogLevel = LOG_LEVEL_CORE;
 // AddLog Implementation
 // =======================
 void Logger(uint8_t level, const char* tag, const char* fmt, ...) {
-    if (level > CurrentLogLevel) {
+    if (level > Settings.logger.CurrentLogLevel) {
         return; // Skip lower-level logs
     }
 

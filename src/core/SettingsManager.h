@@ -3,7 +3,7 @@
 #include "SettingsStruct.h"
 #include "ResponseManager.h"
 
-extern SettingsStruct Settings; // Declare globally
+
 
 class SettingsManager {
 public:
@@ -11,7 +11,7 @@ public:
     void SaveSettings();
     void ResetToDefault();
     void GetSettings();
-    SettingsStruct Settings;
+    void ResetSettingsToDefault();
     static SettingsManager& Instance();
 
 private:

@@ -37,7 +37,7 @@ void AudioService::ApplyVolume() {
 // Same pattern for input
 void AudioService::SetInput(uint8_t input) {
     Settings.audio.input = input;
-    AddLogInfo("AudioService", "Input set to %d", input);
+    AddLogDebug("AudioService", "Input set to %d", input);
 
     ApplyInput();
     SettingsManager::Instance().SaveSettings();

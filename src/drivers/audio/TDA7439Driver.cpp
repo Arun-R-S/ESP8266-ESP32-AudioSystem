@@ -7,7 +7,7 @@ TDA7439Driver::TDA7439Driver(I2CBus& bus, uint8_t address)
 
 bool TDA7439Driver::Init() {
     //Logger::Info("Audio", "TDA7439 initialized at address 0x%02X", _address);
-    AddLog("Audio", "TDA7439 initialized at address 0x%02X", getAddress()); 
+    AddLogDebug("TDA7439", "TDA7439 initialized at address 0x%02X", getAddress()); 
     return true;
 }
 
@@ -15,7 +15,7 @@ void TDA7439Driver::SetVolume(uint8_t level) {
     AddLogCore("TDA7439Driver", "Set Volume %d",level);
     uint8_t val = constrain(31 - level, 0, 31);
     WriteRegister(0x00, val);
-    AddLog("Audio", "Volume set to %d", level);
+    AddLogDebug("TDA7439", "Volume set to %d", level);
 }
 
 void TDA7439Driver::SetInput(uint8_t input) {

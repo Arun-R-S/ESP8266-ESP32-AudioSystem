@@ -18,18 +18,26 @@ void SettingsManager::SaveSettings() {
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
     AddLogCore("SettingsManager", "FlashWrite Main Block 0x%08X",SETTINGS_MAIN_ADDR);
     FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
-    AddLogCore("SettingsManager", "FlashWrite Backup Block 0x%08X",SETTINGS_MAIN_ADDR);
+    AddLogCore("SettingsManager", "FlashWrite Backup Block 0x%08X",SETTINGS_BACKUP_ADDR);
     FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
 }
 
 void SettingsManager::ResetToDefault() {
     AddLogInfo("SettingsManager", "Resetting to default");
     memset(&Settings, 0, sizeof(Settings));
-    Settings.audio.volume = 25;
-    Settings.audio.input = 1;
-    Settings.audio.loudness = true;
-    strcpy(Settings.audio.activeDriver, "TDA7439");
-    strcpy(Settings.system.deviceName, "ESP-Audio");
+    // Settings.audio.volume = 25;
+    // Settings.audio.input = 1;
+    // Settings.audio.loudness = true;
+    // strcpy(Settings.audio.activeDriver, "TDA7439");
+    // strcpy(Settings.system.deviceName, "ESP-Audio");
+}
+
+void SettingsManager::ResetSettingsToDefault() {
+    AddLogInfo("SettingsManager", "Reset Settings to default values");
+    // Create new instance with C++ defaults
+    Settings = SettingsStruct();
+
+    SaveSettings();
 }
 
 void SettingsManager::GetSettings(){
@@ -39,7 +47,7 @@ void SettingsManager::GetSettings(){
     this->_responseManager.Append("\"input\":%d,", Settings.audio.input);
     this->_responseManager.Append("\"loudness\":%s,", Settings.audio.loudness ? "true" : "false");
     this->_responseManager.Append("\"activeDriver\":\"%s\"},", Settings.audio.activeDriver);
-
+    this->_responseManager.Append("\"logger\":{\"currentLogLevel\":\"%d\"},", Settings.logger.CurrentLogLevel);
     this->_responseManager.Append("\"system\":{\"deviceName\":\"%s\"},", Settings.system.deviceName);
 
     this->_responseManager.Append("\"crc32\":\"0x%08X\"}", Settings.crc32);
