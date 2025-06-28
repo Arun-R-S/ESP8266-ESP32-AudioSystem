@@ -4,7 +4,6 @@
 
 class SettingsManager {
 public:
-    SettingsManager();
 
     bool LoadSettings();
     void SaveSettings();
@@ -13,7 +12,7 @@ public:
 
 private:
 
-    static uint32_t CalculateCRC32(const uint8_t* data, size_t length);
+    //static uint32_t CalculateCRC32(const uint8_t* data, size_t length);
     static bool LoadFromFlash();
     static bool SaveToFlash();
 };

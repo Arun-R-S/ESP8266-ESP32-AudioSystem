@@ -4,7 +4,7 @@
 // =======================
 // Default Log Level
 // =======================
-uint8_t CurrentLogLevel = LOG_LEVEL_DEBUG_MORE;
+uint8_t CurrentLogLevel = LOG_LEVEL_CORE;
 
 // =======================
 // AddLog Implementation

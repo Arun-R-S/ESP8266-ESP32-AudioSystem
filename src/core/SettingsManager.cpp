@@ -1,17 +1,20 @@
 #include "FlashFunctions.h"
 #include "SettingsStruct.h"
 #include "SettingsManager.h"
+#include "Logger.h"
 
 #define SETTINGS_MAIN_ADDR  (0x7B000)
 #define SETTINGS_BACKUP_ADDR (0x7C000)
 
 void SettingsManager::SaveSettings() {
+    AddLogDebug("Settings", "Saving Settings");
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
     FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
     FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
 }
 
 void SettingsManager::ResetToDefault() {
+    AddLogInfo("Settings", "Resetting to default");
     memset(&Settings, 0, sizeof(Settings));
     Settings.audio.volume = 25;
     Settings.audio.input = 1;
@@ -21,6 +24,8 @@ void SettingsManager::ResetToDefault() {
 }
 
 bool SettingsManager::LoadSettings() {
+    AddLogInfo("Settings", "Load Settings...");
+    AddLogDebug("Settings", "Retrieving from Flash...");
     SettingsStruct temp;
     if (FlashRead(SETTINGS_MAIN_ADDR, &temp, sizeof(temp))) {
         uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
@@ -29,7 +34,8 @@ bool SettingsManager::LoadSettings() {
             return true;
         }
     }
-
+    AddLogDebug("Settings", "Retrieving from Flash fails...");
+    AddLogDebug("Settings", "Retrieving from backup...");
     // Try backup
     if (FlashRead(SETTINGS_BACKUP_ADDR, &temp, sizeof(temp))) {
         uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
@@ -39,7 +45,8 @@ bool SettingsManager::LoadSettings() {
             return true;
         }
     }
-
+    AddLogDebug("Settings", "Retrieving from backup fails...");
+    AddLogError("Settings", "Failed to load settings....");
     // If both fail, reset to defaults
     ResetToDefault();
     SaveSettings();
