@@ -24,5 +24,6 @@ void AudioDriverManager::Init(I2CBus& bus) {
 }
 
 IAudioDriver* AudioDriverManager::GetActiveDriver() {
+    AddLogDebug("AudioDriverManager","GetActiveDrivers Start");
     return activeDriver;
 }
