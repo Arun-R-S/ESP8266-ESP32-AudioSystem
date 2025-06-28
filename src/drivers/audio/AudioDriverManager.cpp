@@ -25,7 +25,8 @@ void AudioDriverManager::Init(I2CBus& bus) {
 
     // AddLogInfo("AudioDriverManager", "JSON: %s", this->_responseManager.Get());
     if (strcmp(Settings.audio.activeDriver, "TDA7439") == 0) {
-        activeDriver = new TDA7439Driver(bus, 0x44);
+        AddLogDebug("AudioDriverManager", "Settings Active Audio Driver - 0x%02X",Settings.DeviceConfig.AudioIC.TDA7439_Address);
+        activeDriver = new TDA7439Driver(bus, Settings.DeviceConfig.AudioIC.TDA7439_Address);
     }
     // (Future) else if (strcmp(Settings.audio.activeDriver, "PT2322") == 0) { ... }
 

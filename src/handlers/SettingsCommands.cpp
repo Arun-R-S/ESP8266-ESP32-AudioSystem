@@ -45,29 +45,29 @@ bool CmdSettingsLogger(const String &payload)
         if(cmd == "loglevel1")
         {
             AddLog("CmdSettingsLogger", "Setting Loglevel 1");
-            Settings.logger.CurrentLogLevel = 1;
-            SettingsManager::Instance().SaveSettings();
+            Settings.logger.CurrentLogLevel = LOG_LEVEL_INFO;
+            SetLoggerLevel(Settings.logger.CurrentLogLevel);
             return true;
         }
         else if(cmd == "loglevel2")
         {
             AddLog("CmdSettingsLogger", "Setting Loglevel 2");
-            Settings.logger.CurrentLogLevel = 2;
-            SettingsManager::Instance().SaveSettings();
+            Settings.logger.CurrentLogLevel = LOG_LEVEL_WARN;
+            SetLoggerLevel(Settings.logger.CurrentLogLevel);
             return true;
         }
         else if(cmd == "loglevel3")
         {
             AddLog("CmdSettingsLogger", "Setting Loglevel 3");
-            Settings.logger.CurrentLogLevel = 3;
-            SettingsManager::Instance().SaveSettings();
+            Settings.logger.CurrentLogLevel = LOG_LEVEL_ERROR;
+            SetLoggerLevel(Settings.logger.CurrentLogLevel);
             return true;
         }
         else if(cmd == "loglevel7")
         {
             AddLog("CmdSettingsLogger", "Setting Loglevel 7");
-            Settings.logger.CurrentLogLevel = 7;
-            SettingsManager::Instance().SaveSettings();
+            Settings.logger.CurrentLogLevel = LOG_LEVEL_CORE;
+            SetLoggerLevel(Settings.logger.CurrentLogLevel);
             return true;
         }
         else{

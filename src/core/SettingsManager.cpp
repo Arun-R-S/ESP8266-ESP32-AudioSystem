@@ -2,6 +2,7 @@
 #include "SettingsStruct.h"
 #include "SettingsManager.h"
 #include "Logger.h"
+#include "config/DeviceConfig.h"
 
 #define SETTINGS_MAIN_ADDR  (0x7B000)
 #define SETTINGS_BACKUP_ADDR (0x7C000)
@@ -36,7 +37,7 @@ void SettingsManager::ResetSettingsToDefault() {
     AddLogInfo("SettingsManager", "Reset Settings to default values");
     // Create new instance with C++ defaults
     Settings = SettingsStruct();
-
+    Settings.DeviceConfig = DefaultDeviceConfig;
     SaveSettings();
 }
 

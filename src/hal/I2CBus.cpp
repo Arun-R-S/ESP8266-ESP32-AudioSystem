@@ -1,15 +1,16 @@
 #include "I2CBus.h"
 #include <Wire.h>
 #include "core/Logger.h"
+#include "core/SettingsStruct.h"
 
 I2CBus::I2CBus(uint8_t sda, uint8_t scl) : _sda(sda), _scl(scl) {}
 
 bool I2CBus::Init() {
 #ifdef ESP8266
-    Wire.begin(_sda, _scl);
+    Wire.begin(Settings.DeviceConfig.I2C.SDA, Settings.DeviceConfig.I2C.SCL);
     AddLogInfo("I2CBus","Wire Init");
 #elif defined(ESP32)
-    Wire.begin(_sda, _scl);
+    Wire.begin(Settings.DeviceConfig.I2C.SDA, Settings.DeviceConfig.I2C.SCL);
     AddLogInfo("I2CBus","Wire Init");
 #endif
     return true;

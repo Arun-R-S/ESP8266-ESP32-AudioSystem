@@ -2,7 +2,7 @@
 #include "Logger.h"
 #include "../hal/I2CBus.h"
 #include "../drivers/audio/TDA7439Driver.h"
-#include "boards/BoardConfig.h"
+#include "boards/Board_Definitions.h"
 #include "core/CommandRegistry.h"
 #include "core/CommandProcessor.h"
 #include "handlers/I2CCommands.h"
@@ -13,8 +13,8 @@
 #include "ResponseManager.h"
 #include "drivers/audio/AudioDriverManager.h"
 
-I2CBus i2c(DEFAULT_SDA, DEFAULT_SCL);
-TDA7439Driver audio(i2c, 0x44);
+
+//TDA7439Driver audio(i2c, 0x44);
 
 CommandRegistry registry;
 CommandProcessor processor(registry);
@@ -24,11 +24,15 @@ ResponseManager responseManger;
 void App::Setup() {
     // Initialization code
     Serial.begin(115200);
+    // Initialize Logger
+    Logger::Begin(Serial, LOG_LEVEL_DEBUG);
     AddLog("App", "Starting Audio Controller");
     delay(300);
-    i2c.Init();
+    
     SettingsManager::Instance().LoadSettings();
     delay(1000);
+    I2CBus i2c(BOARD_PIN_SDA, BOARD_PIN_SCL);
+    i2c.Init();
     AudioDriverManager::Instance().Init(i2c);
     // Register command sets
     RegisterI2CCommands(registry);

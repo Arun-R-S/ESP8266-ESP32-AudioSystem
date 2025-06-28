@@ -1,0 +1,12 @@
+#pragma once
+
+enum ErrorCode : uint8_t {
+    ERROR_NONE = 0,
+    ERROR_I2C_NACK = 1,
+    ERROR_I2C_TIMEOUT = 2,
+    ERROR_DEVICE_NOT_FOUND = 3,
+    ERROR_INVALID_PARAM = 4,
+    ERROR_EEPROM_FAIL = 5,
+    ERROR_FILESYSTEM_FAIL = 6,
+    ERROR_UNKNOWN = 255
+};

@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include "Logger.h"
+#include "config/DeviceConfig.h"
 
 struct AudioSettings {
     uint8_t volume = 10;
@@ -17,7 +18,7 @@ struct SystemSettings {
 };
 
 struct LoggerSettings {
-    uint8_t CurrentLogLevel = 7;
+    LogLevel CurrentLogLevel = LOG_LEVEL_CORE;
 };
 
 struct SettingsStruct {
@@ -26,6 +27,7 @@ struct SettingsStruct {
     AudioSettings audio;
     SystemSettings system;
     LoggerSettings logger;
+    DeviceConfig_t DeviceConfig;
     // Future expansions can be added here
 };
 
