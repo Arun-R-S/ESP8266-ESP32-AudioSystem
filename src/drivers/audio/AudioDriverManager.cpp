@@ -12,18 +12,18 @@ AudioDriverManager& AudioDriverManager::Instance() {
 
 void AudioDriverManager::Init(I2CBus& bus) {
     AddLogDebug("AudioDriverManager", "Settings Active Audio Driver - %s",Settings.audio.activeDriver);
-    this->_responseManager.Clear();
-    this->_responseManager.Append("{\"audio\":{");
-    this->_responseManager.Append("\"volume\":%d,", Settings.audio.volume);
-    this->_responseManager.Append("\"input\":%d,", Settings.audio.input);
-    this->_responseManager.Append("\"loudness\":%s,", Settings.audio.loudness ? "true" : "false");
-    this->_responseManager.Append("\"activeDriver\":\"%s\"},", Settings.audio.activeDriver);
+    // this->_responseManager.Clear();
+    // this->_responseManager.Append("{\"audio\":{");
+    // this->_responseManager.Append("\"volume\":%d,", Settings.audio.volume);
+    // this->_responseManager.Append("\"input\":%d,", Settings.audio.input);
+    // this->_responseManager.Append("\"loudness\":%s,", Settings.audio.loudness ? "true" : "false");
+    // this->_responseManager.Append("\"activeDriver\":\"%s\"},", Settings.audio.activeDriver);
 
-    this->_responseManager.Append("\"system\":{\"deviceName\":\"%s\"},", Settings.system.deviceName);
+    // this->_responseManager.Append("\"system\":{\"deviceName\":\"%s\"},", Settings.system.deviceName);
 
-    this->_responseManager.Append("\"crc32\":\"0x%08X\"}", Settings.crc32);
+    // this->_responseManager.Append("\"crc32\":\"0x%08X\"}", Settings.crc32);
 
-    AddLogInfo("AudioDriverManager", "JSON: %s", this->_responseManager.Get());
+    // AddLogInfo("AudioDriverManager", "JSON: %s", this->_responseManager.Get());
     if (strcmp(Settings.audio.activeDriver, "TDA7439") == 0) {
         activeDriver = new TDA7439Driver(bus, 0x44);
     }

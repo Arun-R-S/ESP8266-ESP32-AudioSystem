@@ -64,7 +64,7 @@ bool SettingsManager::LoadSettings() {
         if (crc == temp.crc32) {
             memcpy(&Settings, &temp, sizeof(temp));
             AddLogDebug("SettingsManager", "Retrieved from Main Block...");
-            GetSettings();
+            //GetSettings();
             return true;
         }
     }
