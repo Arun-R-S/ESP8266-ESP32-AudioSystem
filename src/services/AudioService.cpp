@@ -1,18 +1,15 @@
 #include "AudioService.h"
 #include "core/Logger.h"
 #include "core/SettingsStruct.h"
-#include "core/SettingsManager.h"
-#include "drivers/audio/IAudioDriver.h"  // Your hardware driver class
+#include "core/SettingsManager.h"  // Your hardware driver class
 #include "drivers/audio/AudioDriverManager.h"
 
-const char* Module_TAG = "AudioService";
-const char* FriendlyTag_TAG = "Audio";
 
 void AudioService::SetVolume(uint8_t volume) {
     if (volume > 100) volume = 100;
 
     Settings.audio.volume = volume;
-    AddLogInfo(Module_TAG, "Volume set to %d", volume);
+    AddLogInfo("AudioService", "Volume set to %d", volume);
 
     ApplyVolume();
     SettingsManager::Instance().SaveSettings();
@@ -30,27 +27,27 @@ void AudioService::ApplyVolume() {
 // Same pattern for input
 void AudioService::SetInput(uint8_t input) {
     Settings.audio.input = input;
-    AddLogInfo(Module_TAG, "Input set to %d", input);
+    AddLogInfo("AudioService", "Input set to %d", input);
 
     ApplyInput();
     SettingsManager::Instance().SaveSettings();
 }
 
 void AudioService::ApplyInput() {
-    AudioDriver::Instance().SetInput(Settings.audio.input);
+    AudioDriverManager::Instance().GetActiveDriver()->SetInput(Settings.audio.input);
 }
 
 // Same for loudness
 void AudioService::SetLoudness(bool enabled) {
     Settings.audio.loudness = enabled;
-    AddLogInfo(Module_TAG, "Loudness %s", enabled ? "ON" : "OFF");
+    AddLogInfo("AudioService", "Loudness %s", enabled ? "ON" : "OFF");
 
     ApplyLoudness();
     SettingsManager::Instance().SaveSettings();
 }
 
 void AudioService::ApplyLoudness() {
-    AudioDriver::Instance().SetLoudness(Settings.audio.loudness);
+    AudioDriverManager::Instance().GetActiveDriver()->SetLoudness(Settings.audio.loudness);
 }
 
 // Apply settings on boot

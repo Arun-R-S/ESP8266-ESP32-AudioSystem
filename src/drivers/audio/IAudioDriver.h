@@ -7,7 +7,7 @@ class IAudioDriver {
 public:
     virtual ~IAudioDriver() = default;
 
-    virtual void Init() = 0;
+    virtual bool Init() = 0;
     virtual void SetVolume(uint8_t volume) = 0;
     virtual void SetInput(uint8_t input) = 0;
     virtual void SetLoudness(bool enable) = 0;

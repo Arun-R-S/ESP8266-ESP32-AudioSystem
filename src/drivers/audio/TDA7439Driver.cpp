@@ -25,11 +25,15 @@ void TDA7439Driver::SetLoudness(bool enable) {
     WriteRegister(0x02, enable ? 0x10 : 0x00);
 }
 
-void TDA7439Driver::SetBass(uint8_t level) {
+void TDA7439Driver::SetBass(int8_t level) {
     WriteRegister(0x03, level & 0x0F);
 }
 
-void TDA7439Driver::SetTreble(uint8_t level) {
+void TDA7439Driver::SetTreble(int8_t level) {
+    WriteRegister(0x04, level & 0x0F);
+}
+
+void TDA7439Driver::SetBalance(int8_t level) {
     WriteRegister(0x04, level & 0x0F);
 }
 
@@ -39,5 +43,11 @@ void TDA7439Driver::SaveState() {
 
 void TDA7439Driver::LoadState() {
     // Load previous settings
+}
+
+void TDA7439Driver::WriteRegister(uint8_t reg, uint8_t value) {
+    _i2c.Write(_i2cAddress,reg,value);
+
+    AddLogDebug("TDA7439", "Write reg 0x%02X = 0x%02X", reg, value);
 }
 
