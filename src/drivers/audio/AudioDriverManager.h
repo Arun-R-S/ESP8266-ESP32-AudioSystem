@@ -1,14 +1,16 @@
 #pragma once
-#include "AudioDriver.h"
+
+#include "IAudioDriver.h"
+#include "hal/I2CBus.h"
 
 class AudioDriverManager {
 public:
     static AudioDriverManager& Instance();
 
-    void Init();
-    AudioDriver* GetActiveDriver();
+    void Init(I2CBus& bus);
+    IAudioDriver* GetActiveDriver();
 
 private:
     AudioDriverManager() = default;
-    AudioDriver* activeDriver = nullptr;
+    IAudioDriver* activeDriver = nullptr;
 };

@@ -1,5 +1,5 @@
 #pragma once
-#include "AudioDriver.h"
+#include "IAudioDriver.h"
 #include "../../hal/I2CBus.h"
 
 class TDA7439Driver : public AudioDriver {

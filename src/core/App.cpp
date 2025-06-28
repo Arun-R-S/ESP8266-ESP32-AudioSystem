@@ -37,11 +37,12 @@ void App::Setup() {
 
     AddLogInfo("Settings", "JSON: %s", responseManger.Get());
     i2c.Init();
-    audio.Init();   
+    AudioDriverManager::Instance().Init(i2cBus);
+    AudioDriverManager::Instance().GetActiveDriver()->Init();   
 
-    audio.SetVolume(10);
-    audio.SetInput(1);
-    audio.SetLoudness(true);
+    AudioDriverManager::Instance().GetActiveDriver()->SetVolume(10);
+    AudioDriverManager::Instance().GetActiveDriver()->SetInput(1);
+    AudioDriverManager::Instance().GetActiveDriver()->SetLoudness(true);
 
     // Register command sets
     RegisterI2CCommands(registry);
