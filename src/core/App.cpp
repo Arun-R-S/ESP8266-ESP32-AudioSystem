@@ -19,10 +19,11 @@ CommandProcessor processor(registry);
 SettingsManager settingsManager;
 
 void App::Setup() {
-    settingsManager.LoadSettings();
     // Initialization code
     Serial.begin(115200);
     AddLog("App", "Starting Audio Controller");
+    delay(300);
+    settingsManager.LoadSettings();
     gdbstub_init();
     i2c.Init();
     audio.Init();   
