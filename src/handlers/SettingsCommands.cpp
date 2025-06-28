@@ -44,14 +44,28 @@ bool CmdSettingsLogger(const String &payload)
         AddLogDebug("CmdSettingsLogger", "Payload is %s", cmd.c_str());
         if(cmd == "loglevel1")
         {
-            AddLogDebug("CmdSettingsLogger", "Setting Loglevel 1");
+            AddLog("CmdSettingsLogger", "Setting Loglevel 1");
             Settings.logger.CurrentLogLevel = 1;
+            SettingsManager::Instance().SaveSettings();
+            return true;
+        }
+        else if(cmd == "loglevel2")
+        {
+            AddLog("CmdSettingsLogger", "Setting Loglevel 2");
+            Settings.logger.CurrentLogLevel = 2;
+            SettingsManager::Instance().SaveSettings();
+            return true;
+        }
+        else if(cmd == "loglevel3")
+        {
+            AddLog("CmdSettingsLogger", "Setting Loglevel 3");
+            Settings.logger.CurrentLogLevel = 3;
             SettingsManager::Instance().SaveSettings();
             return true;
         }
         else if(cmd == "loglevel7")
         {
-            AddLogDebug("CmdSettingsLogger", "Setting Loglevel 7");
+            AddLog("CmdSettingsLogger", "Setting Loglevel 7");
             Settings.logger.CurrentLogLevel = 7;
             SettingsManager::Instance().SaveSettings();
             return true;
