@@ -5,8 +5,6 @@
 #define SETTINGS_MAIN_ADDR  (0x7B000)
 #define SETTINGS_BACKUP_ADDR (0x7C000)
 
-SettingsStruct Settings;
-
 void SettingsManager::SaveSettings() {
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
     FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));

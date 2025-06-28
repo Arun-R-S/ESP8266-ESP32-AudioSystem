@@ -4,13 +4,14 @@
 
 class SettingsManager {
 public:
+    SettingsManager();
+
     bool LoadSettings();
     void SaveSettings();
     void ResetToDefault();
-    SettingsStruct& Get();
+    SettingsStruct Settings;
 
 private:
-    static SettingsStruct Settings;
 
     static uint32_t CalculateCRC32(const uint8_t* data, size_t length);
     static bool LoadFromFlash();
