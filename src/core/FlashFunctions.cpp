@@ -1,9 +1,12 @@
 #include "FlashFunctions.h"
+#include "Logger.h"
 
 #if defined(ESP8266)
 #include <ESP.h>
+
 #elif defined(ESP32)
 #include <esp_spi_flash.h>
+
 #else
 #error "Unsupported platform"
 #endif
@@ -11,8 +14,10 @@
 bool FlashRead(uint32_t address, void *data, size_t len)
 {
 #if defined(ESP8266)
+    AddLogCore("Flash ESP8266","Read");
     return ESP.flashRead(address, (uint32_t *)data, len) == true;
 #elif defined(ESP32)
+    AddLogCore("Flash ESP32","Read");
     return spi_flash_read(address, data, len) == ESP_OK;
 #endif
 }
@@ -20,9 +25,11 @@ bool FlashRead(uint32_t address, void *data, size_t len)
 bool FlashWrite(uint32_t address, const void *data, size_t len)
 {
 #if defined(ESP8266)
+    AddLogCore("Flash ESP8266","Write");
     return ESP.flashEraseSector(address / 4096) &&
            ESP.flashWrite(address, (uint32_t *)data, len);
 #elif defined(ESP32)
+    AddLogCore("Flash ESP32","Write");
     spi_flash_erase_range(address, 4096); // Always erase before write
     return spi_flash_write(address, data, len) == ESP_OK;
 #endif

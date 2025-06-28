@@ -29,6 +29,7 @@ void Logger(uint8_t level, const char* tag, const char* fmt, ...) {
         case LOG_LEVEL_DEBUG:      levelStr = "DEBUG";  break;
         case LOG_LEVEL_DEBUG_MORE: levelStr = "DEBUG+"; break;
         case LOG_LEVEL_WARN:       levelStr = "WARN";   break;
+        case LOG_LEVEL_CORE:       levelStr = "CORE";   break;
         case LOG_LEVEL_SECRET:     levelStr = "SECRET"; break;
         default:                   levelStr = "LOG";    break;
     }

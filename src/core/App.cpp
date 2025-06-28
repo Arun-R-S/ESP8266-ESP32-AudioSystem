@@ -8,6 +8,7 @@
 #include "core/CommandProcessor.h"
 #include "handlers/I2CCommands.h"
 #include "handlers/AudioCommands.h"
+#include "SettingsManager.h"
 
 I2CBus i2c(DEFAULT_SDA, DEFAULT_SCL);
 TDA7439Driver audio(i2c, 0x44);
@@ -15,7 +16,9 @@ TDA7439Driver audio(i2c, 0x44);
 CommandRegistry registry;
 CommandProcessor processor(registry);
 
+
 void App::Setup() {
+    LoadSettings();
     // Initialization code
     Serial.begin(115200);
     AddLog("App", "Starting Audio Controller");

@@ -12,7 +12,7 @@ struct SystemSettings {
     char deviceName[32];
 };
 
-struct AppSettings {
+struct SettingsStruct {
     uint32_t crc32;  // Checksum for integrity
 
     AudioSettings audio;
@@ -20,3 +20,6 @@ struct AppSettings {
 
     // Future expansions can be added here
 };
+
+// Global instance
+extern SettingsStruct Settings;

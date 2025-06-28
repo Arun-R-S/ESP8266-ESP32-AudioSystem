@@ -6,6 +6,21 @@
 
 SettingsStruct Settings;
 
+void SaveSettings() {
+    Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
+    FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
+    FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
+}
+
+void ResetToDefault() {
+    memset(&Settings, 0, sizeof(Settings));
+    Settings.audio.volume = 25;
+    Settings.audio.input = 1;
+    Settings.audio.loudness = true;
+    strcpy(Settings.audio.activeDriver, "TDA7439");
+    strcpy(Settings.system.deviceName, "ESP-Audio");
+}
+
 bool LoadSettings() {
     SettingsStruct temp;
     if (FlashRead(SETTINGS_MAIN_ADDR, &temp, sizeof(temp))) {
@@ -27,22 +42,11 @@ bool LoadSettings() {
     }
 
     // If both fail, reset to defaults
-    ResetSettings();
+    ResetToDefault();
     SaveSettings();
     return false;
 }
 
-void SaveSettings() {
-    Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
-    FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
-    FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
-}
 
-void ResetSettings() {
-    memset(&Settings, 0, sizeof(Settings));
-    Settings.volume = 25;
-    Settings.input = 1;
-    Settings.loudness = true;
-    strcpy(Settings.activeDriver, "TDA7439");
-    strcpy(Settings.deviceName, "ESP-Audio");
-}
+
+
