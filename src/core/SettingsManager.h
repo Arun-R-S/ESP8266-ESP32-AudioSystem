@@ -9,6 +9,7 @@ public:
     void SaveSettings();
     void ResetToDefault();
     SettingsStruct Settings;
+    static SettingsManager& Instance();
 
 private:
 

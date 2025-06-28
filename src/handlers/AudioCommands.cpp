@@ -1,18 +1,20 @@
 #include "AudioCommands.h"
 #include "core/Logger.h"
-#include "drivers/audio/AudioDriver.h"
+#include "services/AudioService.h"
+
+AudioService audioService;
 
 bool CmdAudioSetVolume(const String& payload) {
     if (!payload.isEmpty())
     {
         int vol = payload.toInt();
         AddLogInfo("Audio", "Setting volume to %d", vol);
-        //AudioDriver::SetVolume();   
+        audioService.SetVolume(vol);
         return true;
     }
     else
     {
-        AddLogWarn("CmdI2C", "No payload provided");
+        AddLogWarn("Audio", "No payload provided");
         return false;
     }
     return false;

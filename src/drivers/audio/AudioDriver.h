@@ -12,4 +12,5 @@ public:
     virtual void SaveState() = 0;
     virtual void LoadState() = 0;
     virtual ~AudioDriver() {}
+    static AudioDriver& Instance();
 };
