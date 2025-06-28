@@ -2,7 +2,7 @@
 #include "core/Logger.h"
 #include "core/SettingsStruct.h"
 #include "core/SettingsManager.h"
-#include "drivers/audio/AudioDriver.h"  // Your hardware driver class
+#include "drivers/audio/IAudioDriver.h"  // Your hardware driver class
 #include "drivers/audio/AudioDriverManager.h"
 
 const char* Module_TAG = "AudioService";
@@ -24,7 +24,7 @@ uint8_t AudioService::GetVolume() {
 
 void AudioService::ApplyVolume() {
     AudioDriverManager::Instance().GetActiveDriver()->SetVolume(Settings.audio.volume);
-    AudioDriver::Instance().SetVolume(Settings.audio.volume);
+    
 }
 
 // Same pattern for input

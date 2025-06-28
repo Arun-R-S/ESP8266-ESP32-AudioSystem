@@ -23,6 +23,7 @@ void App::Setup() {
     Serial.begin(115200);
     AddLog("App", "Starting Audio Controller");
     delay(300);
+    i2c.Init();
     SettingsManager::Instance().LoadSettings();
     responseManger.Clear();
     responseManger.Append("{\"audio\":{");
@@ -36,13 +37,8 @@ void App::Setup() {
     responseManger.Append("\"crc32\":\"0x%08X\"}", Settings.crc32);
 
     AddLogInfo("Settings", "JSON: %s", responseManger.Get());
-    i2c.Init();
-    AudioDriverManager::Instance().Init(i2cBus);
-    AudioDriverManager::Instance().GetActiveDriver()->Init();   
-
-    AudioDriverManager::Instance().GetActiveDriver()->SetVolume(10);
-    AudioDriverManager::Instance().GetActiveDriver()->SetInput(1);
-    AudioDriverManager::Instance().GetActiveDriver()->SetLoudness(true);
+   
+    
 
     // Register command sets
     RegisterI2CCommands(registry);
