@@ -16,9 +16,10 @@ TDA7439Driver audio(i2c, 0x44);
 CommandRegistry registry;
 CommandProcessor processor(registry);
 
+SettingsManager settingsManager;
 
 void App::Setup() {
-    LoadSettings();
+    settingsManager.LoadSettings();
     // Initialization code
     Serial.begin(115200);
     AddLog("App", "Starting Audio Controller");

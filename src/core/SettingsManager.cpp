@@ -1,18 +1,19 @@
 #include "FlashFunctions.h"
 #include "SettingsStruct.h"
+#include "SettingsManager.h"
 
 #define SETTINGS_MAIN_ADDR  (0x7B000)
 #define SETTINGS_BACKUP_ADDR (0x7C000)
 
 SettingsStruct Settings;
 
-void SaveSettings() {
+void SettingsManager::SaveSettings() {
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
     FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
     FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
 }
 
-void ResetToDefault() {
+void SettingsManager::ResetToDefault() {
     memset(&Settings, 0, sizeof(Settings));
     Settings.audio.volume = 25;
     Settings.audio.input = 1;
@@ -21,7 +22,7 @@ void ResetToDefault() {
     strcpy(Settings.system.deviceName, "ESP-Audio");
 }
 
-bool LoadSettings() {
+bool SettingsManager::LoadSettings() {
     SettingsStruct temp;
     if (FlashRead(SETTINGS_MAIN_ADDR, &temp, sizeof(temp))) {
         uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);

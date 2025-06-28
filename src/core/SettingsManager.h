@@ -4,10 +4,10 @@
 
 class SettingsManager {
 public:
-    static bool LoadSettings();
-    static void SaveSettings();
-    static void ResetToDefault();
-    static SettingsStruct& Get();
+    bool LoadSettings();
+    void SaveSettings();
+    void ResetToDefault();
+    SettingsStruct& Get();
 
 private:
     static SettingsStruct Settings;
