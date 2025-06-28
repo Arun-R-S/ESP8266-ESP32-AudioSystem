@@ -3,6 +3,8 @@
 #include "SettingsStruct.h"
 #include "ResponseManager.h"
 
+extern SettingsStruct Settings; // Declare globally
+
 class SettingsManager {
 public:
     bool LoadSettings();

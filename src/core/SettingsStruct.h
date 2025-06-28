@@ -21,5 +21,4 @@ struct SettingsStruct {
     // Future expansions can be added here
 };
 
-// Global instance
-extern SettingsStruct Settings;
+

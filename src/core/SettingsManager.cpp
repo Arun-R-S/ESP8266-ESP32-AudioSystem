@@ -6,6 +6,8 @@
 #define SETTINGS_MAIN_ADDR  (0x7B000)
 #define SETTINGS_BACKUP_ADDR (0x7C000)
 
+SettingsStruct Settings;  // Define exactly once
+
 SettingsManager& SettingsManager::Instance() {
     static SettingsManager instance;
     return instance;
