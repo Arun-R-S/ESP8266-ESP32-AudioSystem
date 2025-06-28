@@ -1,15 +1,18 @@
 #pragma once
-#include <ArduinoJson.h>
-#include <FS.h>
+
+#include "SettingsStruct.h"
 
 class SettingsManager {
 public:
-    static bool Load();
-    static bool Save();
-    static JsonVariant Get(const char* key);
-    static void Set(const char* key, JsonVariant value);
+    static void Load();
+    static void Save();
+    static void ResetToDefault();
+    static AppSettings& Get();
 
 private:
-    static DynamicJsonDocument doc;
-    static const char* filename;
+    static AppSettings settings;
+
+    static uint32_t CalculateCRC32(const uint8_t* data, size_t length);
+    static bool LoadFromFlash();
+    static bool SaveToFlash();
 };

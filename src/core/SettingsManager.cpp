@@ -1,50 +1,48 @@
-#include "SettingsManager.h"
-#include "Logger.h"
-#include <LittleFS.h>
+#include "FlashFunctions.h"
+#include "SettingsStruct.h"
 
-const char* SettingsManager::filename = "/settings.json";
-DynamicJsonDocument SettingsManager::doc(2048);
+#define SETTINGS_MAIN_ADDR  (0x7B000)
+#define SETTINGS_BACKUP_ADDR (0x7C000)
 
-bool SettingsManager::Load() {
-    if (!LittleFS.begin()) {
-        AddLogError("SettingsManager","Failed to mount LittleFS");
-        return false;
+SettingsStruct Settings;
+
+bool LoadSettings() {
+    SettingsStruct temp;
+    if (FlashRead(SETTINGS_MAIN_ADDR, &temp, sizeof(temp))) {
+        uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
+        if (crc == temp.crc32) {
+            memcpy(&Settings, &temp, sizeof(temp));
+            return true;
+        }
     }
 
-    File file = LittleFS.open(filename, "r");
-    if (!file) {
-        AddLogWarn("SettingsManager","Settings file not found, using defaults");
-        return false;
+    // Try backup
+    if (FlashRead(SETTINGS_BACKUP_ADDR, &temp, sizeof(temp))) {
+        uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
+        if (crc == temp.crc32) {
+            memcpy(&Settings, &temp, sizeof(temp));
+            SaveSettings(); // restore main
+            return true;
+        }
     }
 
-    DeserializationError err = deserializeJson(doc, file);
-    file.close();
-    if (err) {
-        AddLogError("SettingsManager","Failed to parse settings");
-        return false;
-    }
-
-    AddLogInfo("SettingsManager","Settings loaded");
-    return true;
+    // If both fail, reset to defaults
+    ResetSettings();
+    SaveSettings();
+    return false;
 }
 
-bool SettingsManager::Save() {
-    File file = LittleFS.open(filename, "w");
-    if (!file) {
-        AddLogError("SettingsManager","Failed to open settings file for writing");
-        return false;
-    }
-
-    serializeJson(doc, file);
-    file.close();
-    AddLogInfo("SettingsManager","Settings saved");
-    return true;
+void SaveSettings() {
+    Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
+    FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
+    FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
 }
 
-JsonVariant SettingsManager::Get(const char* key) {
-    return doc[key];
-}
-
-void SettingsManager::Set(const char* key, JsonVariant value) {
-    doc[key] = value;
+void ResetSettings() {
+    memset(&Settings, 0, sizeof(Settings));
+    Settings.volume = 25;
+    Settings.input = 1;
+    Settings.loudness = true;
+    strcpy(Settings.activeDriver, "TDA7439");
+    strcpy(Settings.deviceName, "ESP-Audio");
 }
