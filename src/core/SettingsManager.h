@@ -4,7 +4,8 @@
 
 class SettingsManager {
 public:
-
+    const char* Module_TAG = "SettingsManager";
+    const char* Friendly_TAG = "Settings";
     bool LoadSettings();
     void SaveSettings();
     void ResetToDefault();
