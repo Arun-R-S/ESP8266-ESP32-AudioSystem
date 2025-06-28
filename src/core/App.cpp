@@ -16,8 +16,6 @@ TDA7439Driver audio(i2c, 0x44);
 CommandRegistry registry;
 CommandProcessor processor(registry);
 
-SettingsManager settingsManager;
-
 ResponseManager responseManger;
 
 void App::Setup() {
@@ -25,17 +23,17 @@ void App::Setup() {
     Serial.begin(115200);
     AddLog("App", "Starting Audio Controller");
     delay(300);
-    settingsManager.LoadSettings();
+    SettingsManager::Instance().LoadSettings();
     responseManger.Clear();
     responseManger.Append("{\"audio\":{");
-    responseManger.Append("\"volume\":%d,", settingsManager.Settings.audio.volume);
-    responseManger.Append("\"input\":%d,", settingsManager.Settings.audio.input);
-    responseManger.Append("\"loudness\":%s,", settingsManager.Settings.audio.loudness ? "true" : "false");
-    responseManger.Append("\"activeDriver\":\"%s\"},", settingsManager.Settings.audio.activeDriver);
+    responseManger.Append("\"volume\":%d,", Settings.audio.volume);
+    responseManger.Append("\"input\":%d,", Settings.audio.input);
+    responseManger.Append("\"loudness\":%s,", Settings.audio.loudness ? "true" : "false");
+    responseManger.Append("\"activeDriver\":\"%s\"},", Settings.audio.activeDriver);
 
-    responseManger.Append("\"system\":{\"deviceName\":\"%s\"},", settingsManager.Settings.system.deviceName);
+    responseManger.Append("\"system\":{\"deviceName\":\"%s\"},", Settings.system.deviceName);
 
-    responseManger.Append("\"crc32\":\"0x%08X\"}", settingsManager.Settings.crc32);
+    responseManger.Append("\"crc32\":\"0x%08X\"}", Settings.crc32);
 
     AddLogInfo("Settings", "JSON: %s", responseManger.Get());
     i2c.Init();

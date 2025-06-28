@@ -9,6 +9,11 @@
 const char* Module_TAG = "SettingsManager";
 const char* Friendly_TAG = "Settings";
 
+SettingsManager& SettingsManager::Instance() {
+    static SettingsManager instance;
+    return instance;
+}
+
 void SettingsManager::SaveSettings() {
     AddLogDebug(Module_TAG, "Saving Settings");
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);

@@ -13,4 +13,9 @@ public:
     virtual void LoadState() = 0;
     virtual ~AudioDriver() {}
     static AudioDriver& Instance();
+
+private:
+    AudioDriver() = default;                        // ✅ Private constructor
+    AudioDriver(const AudioDriver&) = delete;       // ✅ Delete copy constructor
+    void operator=(const AudioDriver&) = delete;    // ✅ Delete assignment
 };
