@@ -2,6 +2,7 @@
 
 #include "IAudioDriver.h"
 #include "hal/I2CBus.h"
+#include "core/ResponseManager.h"
 
 class AudioDriverManager {
 public:
@@ -11,6 +12,7 @@ public:
     IAudioDriver* GetActiveDriver();
 
 private:
+    ResponseManager _responseManager;
     AudioDriverManager() = default;
     IAudioDriver* activeDriver = nullptr;
 };

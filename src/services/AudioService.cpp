@@ -6,7 +6,11 @@
 
 
 void AudioService::SetVolume(uint8_t volume) {
-    if (volume > 100) volume = 100;
+    if (volume > 100)
+    {
+        AddLogWarn("AudioService", "Volume %d exceeds max. Clamped to 100.", volume);
+        volume = 100;
+    }
 
     Settings.audio.volume = volume;
     AddLogInfo("AudioService", "Volume set to %d", volume);
@@ -21,8 +25,13 @@ uint8_t AudioService::GetVolume() {
 
 void AudioService::ApplyVolume() {
     AddLogDebug("AudioService", "Apply Volume Start");
-    AudioDriverManager::Instance().GetActiveDriver()->SetVolume(Settings.audio.volume);
-    AddLogDebug("AudioService", "Apply Volume End");
+    auto* driver = AudioDriverManager::Instance().GetActiveDriver();
+    if (driver != nullptr) {
+        driver->SetVolume(Settings.audio.volume);
+        AddLogDebug("AudioService", "Apply Volume End");
+    } else {
+        AddLogError("AudioService", "No active driver. Cannot set volume.");
+    }
 }
 
 // Same pattern for input

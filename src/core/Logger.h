@@ -9,9 +9,10 @@
 #define LOG_LEVEL_WARN       2
 #define LOG_LEVEL_ERROR      3
 #define LOG_LEVEL_DEBUG      4
-#define LOG_LEVEL_DEBUG_MORE 5
-#define LOG_LEVEL_CORE       6
-#define LOG_LEVEL_SECRET     7
+#define LOG_LEVEL_DEBUG_INFO 5
+#define LOG_LEVEL_DEBUG_MORE 6
+#define LOG_LEVEL_CORE       7
+#define LOG_LEVEL_SECRET     8
 
 // =======================
 // Current Log Level (Default INFO)
@@ -34,3 +35,4 @@ void Logger(uint8_t level, const char* tag, const char* fmt, ...);
 #define AddLogCore(tag, fmt, ...)        Logger(LOG_LEVEL_CORE, tag, fmt, ##__VA_ARGS__)
 #define AddLog(tag, fmt, ...)            Logger(LOG_LEVEL_NONE, tag, fmt, ##__VA_ARGS__)
 #define AddLogSecret(tag, fmt, ...)      Logger(LOG_LEVEL_SECRET, tag, fmt, ##__VA_ARGS__)
+#define AddLogDebugInfo(tag, fmt, ...)   Logger(LOG_LEVEL_DEBUG_INFO, tag, fmt, ##__VA_ARGS__)

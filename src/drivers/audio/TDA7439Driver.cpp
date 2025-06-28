@@ -50,6 +50,6 @@ void TDA7439Driver::WriteRegister(uint8_t reg, uint8_t value) {
     AddLogCore("TDA7439","Write reg 0x%02X = 0x%02X", reg, value);
     _i2c.Write(_i2cAddress,reg,value);
 
-    AddLogDebug("TDA7439", "Write reg 0x%02X = 0x%02X", reg, value);
+    AddLogCore("TDA7439", "Write Register End");
 }
 

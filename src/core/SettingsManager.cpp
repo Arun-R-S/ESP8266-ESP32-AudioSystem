@@ -14,7 +14,9 @@ SettingsManager& SettingsManager::Instance() {
 void SettingsManager::SaveSettings() {
     AddLogDebug("SettingsManager", "Saving Settings");
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
+    AddLogCore("SettingsManager", "FlashWrite Main Block 0x%08X",SETTINGS_MAIN_ADDR);
     FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
+    AddLogCore("SettingsManager", "FlashWrite Backup Block 0x%08X",SETTINGS_MAIN_ADDR);
     FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
 }
 
@@ -51,6 +53,8 @@ bool SettingsManager::LoadSettings() {
         uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
         if (crc == temp.crc32) {
             memcpy(&Settings, &temp, sizeof(temp));
+            AddLogDebug("SettingsManager", "Retrieved from Main Block...");
+            GetSettings();
             return true;
         }
     }
@@ -61,6 +65,8 @@ bool SettingsManager::LoadSettings() {
         uint32_t crc = CalculateCRC32((uint8_t*)&temp + 4, sizeof(temp) - 4);
         if (crc == temp.crc32) {
             memcpy(&Settings, &temp, sizeof(temp));
+            AddLogDebug("SettingsManager", "Retrieved from Backup...");
+            AddLogDebug("SettingsManager", "Restoring to Main Block...");
             SaveSettings(); // restore main
             return true;
         }

@@ -11,6 +11,7 @@
 #include "handlers/SettingsCommands.h"
 #include "SettingsManager.h"
 #include "ResponseManager.h"
+#include "drivers/audio/AudioDriverManager.h"
 
 I2CBus i2c(DEFAULT_SDA, DEFAULT_SCL);
 TDA7439Driver audio(i2c, 0x44);
@@ -27,7 +28,8 @@ void App::Setup() {
     delay(300);
     i2c.Init();
     SettingsManager::Instance().LoadSettings();
-    
+    delay(1000);
+    AudioDriverManager::Instance().Init(i2c);
     // Register command sets
     RegisterI2CCommands(registry);
     RegisterAudioCommands(registry);
