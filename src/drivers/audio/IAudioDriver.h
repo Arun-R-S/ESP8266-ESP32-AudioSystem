@@ -13,7 +13,8 @@ enum class AudioFeature {
     RearLeft,
     RearRight,
     Center,
-    Loudness
+    Loudness,
+    Subwoofer,
 };
 
 class IAudioDriver {
