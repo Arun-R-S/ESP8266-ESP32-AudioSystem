@@ -1,7 +1,8 @@
 
 # ESP8266 / ESP32 Audio System Controller
 
-![License](https://img.shields.io/github/license/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=unlicense&color=red&label=License) ![Stars](https://img.shields.io/github/stars/Arun-R-S/ESP8266-ESP32-AudioSystem) ![Issues](https://img.shields.io/github/issues/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=sanfranciscomunicipalrailway&label=Issues) ![Release](https://img.shields.io/github/v/release/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=codeblocks&label=Release)  ![Downloads](https://img.shields.io/github/downloads/Arun-R-S/ESP8266-ESP32-AudioSystem/total?logo=abdownloadmanager&label=Downloads) ![PlatformIO](https://img.shields.io/badge/PlatformIO-Compatible-orange?logo=platformio) ![Arduino](https://img.shields.io/badge/Arduino-Compatible-blue?logo=arduino)
+![License](https://img.shields.io/github/license/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=unlicense&color=red&label=License) ![Stars](https://img.shields.io/github/stars/Arun-R-S/ESP8266-ESP32-AudioSystem) ![Issues](https://img.shields.io/github/issues/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=sanfranciscomunicipalrailway&label=Issues) ![Release](https://img.shields.io/github/v/release/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=codeblocks&label=Release)  ![Downloads](https://img.shields.io/github/downloads/Arun-R-S/ESP8266-ESP32-AudioSystem/total?logo=abdownloadmanager&label=Downloads) ![PlatformIO](https://img.shields.io/badge/PlatformIO-Compatible-orange?logo=platformio) 
+<!-- ![Arduino](https://img.shields.io/badge/Arduino-Compatible-blue?logo=arduino) -->
 
 ![Contributions Welcome](https://img.shields.io/badge/a_t-Welcome-blue?logo=contabo&label=Contributions) 
 
