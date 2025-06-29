@@ -3,28 +3,32 @@
 #include <stdint.h>
 
 enum class AudioFeature {
-    Volume,
+     Volume,
+    Input,
     Bass,
     Treble,
-    Loudness,
-    Input,
     Balance,
-    Surround,
+    FrontLeft,
+    FrontRight,
+    RearLeft,
+    RearRight,
+    Center,
+    Loudness
 };
 
 class IAudioDriver {
 public:
+    virtual ~IAudioDriver() = default;
+
     virtual bool Init() = 0;
-
-    virtual bool SetVolume(uint8_t value) = 0;
-    virtual bool SetBass(int8_t value) { return false; }
-    virtual bool SetTreble(int8_t value) { return false; }
-    virtual bool SetInput(uint8_t input) { return false; }
-    virtual bool SetBalance(uint8_t channel, uint8_t value) { return false; }
-    virtual bool SetLoudness(bool enable) { return false; }
-
-    virtual bool SupportsFeature(AudioFeature feature) = 0;
     virtual const char* GetDriverName() = 0;
 
-    virtual ~IAudioDriver() {}
+    virtual bool SetVolume(uint8_t value) = 0;
+    virtual bool SetInput(uint8_t input) = 0;
+    virtual bool SetBass(int8_t value) = 0;
+    virtual bool SetTreble(int8_t value) = 0;
+    virtual bool SetBalance(int8_t value) = 0;
+    virtual bool Mute() = 0;
+
+    virtual bool SupportsFeature(AudioFeature feature) = 0;
 };

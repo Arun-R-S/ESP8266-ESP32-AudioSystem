@@ -5,11 +5,17 @@
 
 enum ErrorCode {
     ERROR_NONE = 0,
+
     ERROR_I2C_COMMUNICATION = 1,
+    ERROR_I2C_WRITE_FAILED,
+
     ERROR_EEPROM_READ_FAIL,
     ERROR_EEPROM_WRITE_FAIL,
+
     ERROR_DEVICE_NOT_FOUND,
+
     ERROR_INVALID_DATA,
+
     ERROR_DRIVER_INIT_FAILED,
 
     //Add the future ErrorCodes here [START]
