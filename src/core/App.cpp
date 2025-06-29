@@ -1,7 +1,6 @@
 #include "App.h"
 #include "Logger.h"
 #include "../hal/I2CBus.h"
-#include "../drivers/audio/TDA7439Driver.h"
 #include "boards/Board_Definitions.h"
 #include "core/CommandRegistry.h"
 #include "core/CommandProcessor.h"

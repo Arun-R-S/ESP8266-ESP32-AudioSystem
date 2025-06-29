@@ -12,7 +12,7 @@ enum class AudioFeature {
     Surround,
 };
 
-class IAudioDriver {
+class AudioDriver {
 public:
     virtual bool Init() = 0;
 
@@ -26,5 +26,5 @@ public:
     virtual bool SupportsFeature(AudioFeature feature) = 0;
     virtual const char* GetDriverName() = 0;
 
-    virtual ~IAudioDriver() {}
+    virtual ~AudioDriver() {}
 };
