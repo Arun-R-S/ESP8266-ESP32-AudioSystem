@@ -41,7 +41,7 @@ This project is a highly modular, configurable, and extensible firmware for ESP8
   - Error codes, retries, fallback handling for I2C failures
 - ✅ **Cross-Platform Support**
   - Works with both **ESP8266** and **ESP32**
-- ✅ **Tasmota-like Storage System**
+- ✅ **Storage System**
   - Binary data storage with integrity checks
 
 ## 📁 Folder Structure
@@ -181,7 +181,7 @@ struct AudioSettings {
 };
 ```
 
-## 🔧 Settings Storage (Like Tasmota)
+## 🔧 Settings Storage
 
 - Settings are stored in Flash/EEPROM with CRC32 validation.
 - On corruption, factory defaults are restored.
