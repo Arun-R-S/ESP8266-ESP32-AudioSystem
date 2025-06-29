@@ -1,10 +1,9 @@
 
 # ESP8266 / ESP32 Audio System Controller
 
-![License](https://img.shields.io/github/license/Arun-R-S/ESP8266-ESP32-AudioSystem) ![Stars](https://img.shields.io/github/stars/Arun-R-S/ESP8266-ESP32-AudioSystem) ![Issues](https://img.shields.io/github/issues/Arun-R-S/ESP8266-ESP32-AudioSystem)
-![Release](https://img.shields.io/github/v/release/Arun-R-S/ESP8266-ESP32-AudioSystem) ![GitHub tag](https://img.shields.io/github/tag/user/repo) ![Last Commit](https://img.shields.io/github/last-commit/Arun-R-S/ESP8266-ESP32-AudioSystem)
-![PlatformIO](https://img.shields.io/badge/PlatformIO-Compatible-orange?logo=platformio)  ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)   ![Downloads](https://img.shields.io/github/downloads/user/repo/total) 
-![Arduino](https://img.shields.io/badge/Arduino-Compatible-blue?logo=arduino)
+![License](https://img.shields.io/github/license/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=unlicense&color=red&label=License) ![Stars](https://img.shields.io/github/stars/Arun-R-S/ESP8266-ESP32-AudioSystem) ![Issues](https://img.shields.io/github/issues/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=sanfranciscomunicipalrailway&label=Issues) ![Release](https://img.shields.io/github/v/release/Arun-R-S/ESP8266-ESP32-AudioSystem?logo=codeblocks&label=Release)  ![Downloads](https://img.shields.io/github/downloads/Arun-R-S/ESP8266-ESP32-AudioSystem/total?logo=abdownloadmanager&label=Downloads) ![PlatformIO](https://img.shields.io/badge/PlatformIO-Compatible-orange?logo=platformio) ![Arduino](https://img.shields.io/badge/Arduino-Compatible-blue?logo=arduino)
+
+![Contributions Welcome](https://img.shields.io/badge/a_t-Welcome-blue?logo=contabo&label=Contributions) 
 ## 🔥 Overview
 
 This project is a highly modular, configurable, and extensible firmware for ESP8266/ESP32 microcontrollers designed to control audio ICs like **TDA7439**, **PT2313**, **PT2322**, and others via I2C. It features support for physical button control, LCD displays, web UI (future), EEPROM/Flash settings storage, and preset management — all following clean architecture, SOLID principles, and professional coding practices.
