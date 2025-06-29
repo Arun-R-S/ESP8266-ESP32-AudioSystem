@@ -27,7 +27,7 @@ void AudioService::ApplyVolume() {
     AddLogDebug("AudioService", "Apply Volume Start");
     auto* driver = AudioDriverManager::Instance().GetActiveDriver();
     if (driver != nullptr) {
-        driver->SetVolume(Settings.audio.volume);
+        //driver->SetVolume(Settings.audio.volume);
         AddLogDebug("AudioService", "Apply Volume End");
     } else {
         AddLogError("AudioService", "No active driver. Cannot set volume.");
@@ -44,7 +44,7 @@ void AudioService::SetInput(uint8_t input) {
 }
 
 void AudioService::ApplyInput() {
-    AudioDriverManager::Instance().GetActiveDriver()->SetInput(Settings.audio.input);
+    //AudioDriverManager::Instance().GetActiveDriver()->SetInput(Settings.audio.input);
 }
 
 // Same for loudness
@@ -57,7 +57,7 @@ void AudioService::SetLoudness(bool enabled) {
 }
 
 void AudioService::ApplyLoudness() {
-    AudioDriverManager::Instance().GetActiveDriver()->SetLoudness(Settings.audio.loudness);
+    //AudioDriverManager::Instance().GetActiveDriver()->SetLoudness(Settings.audio.loudness);
 }
 
 // Apply settings on boot

@@ -10,6 +10,7 @@ enum ErrorCode {
     ERROR_EEPROM_WRITE_FAIL,
     ERROR_DEVICE_NOT_FOUND,
     ERROR_INVALID_DATA,
+    ERROR_DRIVER_INIT_FAILED,
 
     //Add the future ErrorCodes here [START]
 
