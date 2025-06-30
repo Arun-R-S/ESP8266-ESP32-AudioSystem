@@ -1,37 +1,36 @@
 #pragma once
+
 #include "IAudioDriver.h"
-#include <Arduino.h>
-#include <Wire.h>
-//#include "AudioICBase.h"
-//#include "Logger.h"
-//#include "StatusManager.h"
+#include "hal/I2CBus.h"
+#include "core/StatusManager.h"
+#include "core/Logger.h"
 
 class TDA7418Driver : public IAudioDriver {
 public:
-    TDA7418Driver(TwoWire& wire, uint8_t i2cAddress = 0x44);
+    TDA7418Driver(I2CBus* bus, uint8_t address = 0x44);
 
-    bool begin() override;
-    String getChipName() override { return "TDA7418"; }
+    virtual bool begin() override;
+    String GetDriverName() override { return "TDA7418"; }
 
-    // Core Functions
-    bool setVolume(int volume) override;
-    bool setInput(uint8_t input) override;
-    bool setTone(int bass, int middle, int treble) override;
-    bool setLoudness(bool enable, uint8_t attenuation = 0) override;
-    bool setSpeakerLevels(int fl, int fr, int rl, int rr, int sub) override;
+    virtual bool SetVolume(int volume) override;
+    virtual bool SetInput(uint8_t input) override;
+    virtual bool SetTone(int bass, int middle, int treble) override;
+    virtual bool SetLoudness(bool enable, uint8_t attenuation = 0) override;
+    virtual bool SetSpeakerLevels(int fl, int fr, int rl, int rr, int sub) override;
 
-    // Additional Features
-    bool setMiddleQ(uint8_t q);
-    bool setBassQ(uint8_t q);
-    bool setSoftMute(bool enable);
-    bool setSmoothingFilter(bool enable);
+    virtual bool hasMiddleControl() override { return true; }
+    virtual bool hasSubwoofer() override { return true; }
+    virtual bool hasLoudness() override { return true; }
 
 private:
-    TwoWire* _wire;
-    uint8_t _i2cAddress;
-    uint8_t _registerData[14] = {0};
+    I2CBus* _bus;
+    uint8_t _address;
+    uint8_t _registers[14];
 
     bool writeRegister(uint8_t reg, uint8_t value);
     bool batchWrite(uint8_t startReg, uint8_t* data, uint8_t length);
-    bool updateRegister(uint8_t reg, uint8_t mask, uint8_t value);
+
+    uint8_t volumeToRegister(int value);
+    uint8_t attenuationToRegister(int value);
+    void resetRegisters();
 };
