@@ -1,46 +1,24 @@
 #pragma once
 
-#include <Arduino.h>
-
-#if defined(ESP8266)
-  #include <ESP8266WiFi.h>
-#elif defined(ESP32)
-  #include <WiFi.h>
-#endif
-
-#include "AccessPointManager.h"
-#include "core/Logger.h"
-#include "core/StatusManager.h"
-#include "config/SettingsManager.h"
-
-enum class WiFiConnectionState {
-    Disconnected,
-    Connecting,
-    Connected,
-    AccessPointMode
+enum class WiFiState {
+    DISCONNECTED,
+    CONNECTING,
+    CONNECTED,
+    AP_MODE
 };
 
 class WiFiManager {
 public:
     void begin();
-    void loop();
-
-    WiFiConnectionState getState();
-    String getIP();
-
-    bool isConnected();
-
     void handle();
+    bool isConnected();
+    WiFiState getState() { return state; }
 
 private:
     bool connectToWiFi();
-    void startAccessPoint();
-    void handleConnectionResult();
+    void startAPMode();
 
-    WiFiConnectionState state = WiFiConnectionState::Disconnected;
-    unsigned long retryInterval = 10000;
-    unsigned long lastRetryTime = 0;
-
-    unsigned long connectStart = 0;
-    bool connecting = false;
+    WiFiState state = WiFiState::DISCONNECTED;
+    unsigned long connectStartTime = 0;
+    const unsigned long connectTimeout = 15000; // 15 seconds
 };

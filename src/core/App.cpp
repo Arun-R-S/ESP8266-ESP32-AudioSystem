@@ -32,7 +32,7 @@ void App::Setup() {
     Logger::Begin(Serial, LOG_LEVEL_DEBUG);
     AddLog("App", "Starting Audio Controller");
     delay(300);
-    
+    SettingsManager::Instance().ResetSettingsToDefault();
     SettingsManager::Instance().LoadSettings();
     delay(1000);
     _wifiManager.begin();

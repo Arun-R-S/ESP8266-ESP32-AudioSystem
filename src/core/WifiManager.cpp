@@ -1,74 +1,51 @@
 #include "WiFiManager.h"
-#include "Logger.h"
-#include "StatusManager.h"
+#include <WiFi.h>
 #include "AccessPointManager.h"
+#include "services/SettingsManager.h"
+#include "core/Logger.h"
+
+extern SettingsManager Settings;
+extern AccessPointManager APManager;
 
 void WiFiManager::begin() {
-    AddLogInfo("WiFi", "Starting WiFiManager...");
+    if (strlen(Settings.data.wifiSettings.ssid) == 0) {
+        AddLogWarn(LOG_WIFI, "No SSID configured. Starting AP.");
+        startAPMode();
+        return;
+    }
 
     WiFi.mode(WIFI_STA);
-    WiFi.disconnect();
-    delay(100);
+    state = WiFiState::CONNECTING;
+    connectStartTime = millis();
+    WiFi.begin(Settings.data.wifiSettings.ssid, Settings.data.wifiSettings.password);
 
-    connectToWiFi();
+    AddLogInfo(LOG_WIFI, "Connecting to WiFi SSID: %s", Settings.data.wifiSettings.ssid);
 }
 
-void WiFiManager::loop() {
-    
-}
-
-bool WiFiManager::connectToWiFi() {
-    if (strlen(Settings.wifiSettings.ssid) == 0) {
-        AddLogWarn("WiFi", "No SSID configured.");
-        startAccessPoint();
-        return false;
+void WiFiManager::handle() {
+    if (state == WiFiState::CONNECTING) {
+        if (WiFi.status() == WL_CONNECTED) {
+            AddLogInfo(LOG_WIFI, "WiFi Connected! IP: %s", WiFi.localIP().toString().c_str());
+            state = WiFiState::CONNECTED;
+        } else if (millis() - connectStartTime > connectTimeout) {
+            AddLogError(LOG_WIFI, "WiFi connection failed. Switching to AP Mode.");
+            startAPMode();
+        }
     }
 
-    AddLogInfo("WiFi", "Connecting to %s...", Settings.wifiSettings.ssid);
-    WiFi.begin(Settings.wifiSettings.ssid, Settings.wifiSettings.password);
-
-    connectStart = millis();
-    connecting = true;
-
-    int retries = 0;
-    while (WiFi.status() != WL_CONNECTED && retries < 10) {
-        delay(500);
-        retries++;
-        AddLogInfo("WifiManager", "Connecting...");
+    if (state == WiFiState::CONNECTED && WiFi.status() != WL_CONNECTED) {
+        AddLogError(LOG_WIFI, "WiFi Lost Connection. Attempting reconnect.");
+        begin();
     }
-
-    if (WiFi.status() == WL_CONNECTED) {
-        AddLogInfo("WifiManager", "Connected. IP: %s", WiFi.localIP().toString().c_str());
-        return true;
-    } else {
-        AddLogError("WifiManager", "WiFi connect failed.");
-        startAccessPoint();
-        return false;
-    }
-}
-
-void WiFiManager::startAccessPoint() {
-    String apName = "ESP-Audio-" + String(ESP.getChipId(), HEX);
-    AddLogInfo("WiFi", "Starting Access Point: %s", apName.c_str());
-
-    AccessPointManager::Instance().Start(apName.c_str(), "12345678");
-    state = WiFiConnectionState::AccessPointMode;
-}
-
-WiFiConnectionState WiFiManager::getState() {
-    return state;
-}
-
-String WiFiManager::getIP() {
-    return WiFi.localIP().toString();
 }
 
 bool WiFiManager::isConnected() {
     return WiFi.status() == WL_CONNECTED;
 }
 
-void WiFiManager::handle() {
-    if (!isConnected() && !connecting) {
-        connectToWiFi();
-    }
+void WiFiManager::startAPMode() {
+    WiFi.disconnect(true);
+    WiFi.mode(WIFI_AP);
+    APManager.start();
+    state = WiFiState::AP_MODE;
 }
