@@ -1,7 +1,7 @@
 #include "I2CCommands.h"
 #include "core/Logger.h"
 #include "Wire.h"
-#include "core/SettingsManager.h"
+#include "config/SettingsManager.h"
 
 bool CmdSettings(const String &payload)
 {

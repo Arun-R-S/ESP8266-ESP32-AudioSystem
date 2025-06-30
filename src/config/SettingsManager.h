@@ -1,17 +1,16 @@
 #pragma once
 
 #include "SettingsStruct.h"
-#include "ResponseManager.h"
+#include "core/ResponseManager.h"
 
 
 
 class SettingsManager {
 public:
     bool LoadSettings();
-    void SaveSettings();
-    void ResetToDefault();
+    bool SaveSettings();
     void GetSettings();
-    void ResetSettingsToDefault();
+    bool ResetSettingsToDefault();
     static SettingsManager& Instance();
 
 private:

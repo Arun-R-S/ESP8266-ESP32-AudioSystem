@@ -1,8 +1,8 @@
-#include "FlashFunctions.h"
+#include "core/FlashFunctions.h"
 #include "SettingsStruct.h"
 #include "SettingsManager.h"
-#include "Logger.h"
-#include "config/DeviceConfig.h"
+#include "core/Logger.h"
+#include "DeviceConfig.h"
 
 #define SETTINGS_MAIN_ADDR  (0x7B000)
 #define SETTINGS_BACKUP_ADDR (0x7C000)
@@ -14,31 +14,36 @@ SettingsManager& SettingsManager::Instance() {
     return instance;
 }
 
-void SettingsManager::SaveSettings() {
+bool SettingsManager::SaveSettings() {
     AddLogDebug("SettingsManager", "Saving Settings");
     Settings.crc32 = CalculateCRC32((uint8_t*)&Settings + 4, sizeof(Settings) - 4);
     AddLogCore("SettingsManager", "FlashWrite Main Block 0x%08X",SETTINGS_MAIN_ADDR);
-    FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings));
+    if(!FlashWrite(SETTINGS_MAIN_ADDR, &Settings, sizeof(Settings)))
+    {
+        AddLogError("SettingsManager", "Failed to FlashWrite in Main Block 0x%08X",SETTINGS_MAIN_ADDR);
+        return false;
+    }
     AddLogCore("SettingsManager", "FlashWrite Backup Block 0x%08X",SETTINGS_BACKUP_ADDR);
-    FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings)); // Backup
+    if(!FlashWrite(SETTINGS_BACKUP_ADDR, &Settings, sizeof(Settings))) // Backup
+    {
+        AddLogCore("SettingsManager", "Failed to FlashWrite in Backup Block 0x%08X",SETTINGS_BACKUP_ADDR);
+        return false;
+    }
+    return true;
 }
 
-void SettingsManager::ResetToDefault() {
-    AddLogInfo("SettingsManager", "Resetting to default");
-    memset(&Settings, 0, sizeof(Settings));
-    // Settings.audio.volume = 25;
-    // Settings.audio.input = 1;
-    // Settings.audio.loudness = true;
-    // strcpy(Settings.audio.activeDriver, "TDA7439");
-    // strcpy(Settings.system.deviceName, "ESP-Audio");
-}
-
-void SettingsManager::ResetSettingsToDefault() {
+bool SettingsManager::ResetSettingsToDefault() {
     AddLogInfo("SettingsManager", "Reset Settings to default values");
     // Create new instance with C++ defaults
     Settings = SettingsStruct();
     Settings.DeviceConfig = DefaultDeviceConfig;
-    SaveSettings();
+    if(SaveSettings())
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 void SettingsManager::GetSettings(){
@@ -85,7 +90,7 @@ bool SettingsManager::LoadSettings() {
     AddLogDebug("SettingsManager", "Retrieving from backup fails...");
     AddLogError("SettingsManager", "Failed to load settings....");
     // If both fail, reset to defaults
-    ResetToDefault();
+    ResetSettingsToDefault();
     SaveSettings();
     return false;
 }

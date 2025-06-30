@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include "core/Logger.h"
 #include "core/StatusManager.h"
-#include "core/SettingsStruct.h"
+#include "config/SettingsStruct.h"
 
 I2CBus::I2CBus(uint8_t sda, uint8_t scl) : _sda(sda), _scl(scl) {}
 

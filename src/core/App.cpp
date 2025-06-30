@@ -8,9 +8,9 @@
 #include "handlers/AudioCommands.h"
 #include "handlers/SystemCommands.h"
 #include "handlers/SettingsCommands.h"
-#include "SettingsManager.h"
+#include "config/SettingsManager.h"
 #include "ResponseManager.h"
-
+#include "core/WifiManager.h"
 
 //TDA7439Driver audio(i2c, 0x44);
 
@@ -18,6 +18,8 @@ CommandRegistry registry;
 CommandProcessor processor(registry);
 
 ResponseManager responseManger;
+
+WiFiManager _wifiManager;
 
 void App::Setup() {
     // Initialization code
@@ -29,6 +31,7 @@ void App::Setup() {
     
     SettingsManager::Instance().LoadSettings();
     delay(1000);
+    _wifiManager.begin();
     I2CBus i2c(BOARD_PIN_SDA, BOARD_PIN_SCL);
     i2c.Init();
     //AudioDriverManager::Instance().Init(i2c);

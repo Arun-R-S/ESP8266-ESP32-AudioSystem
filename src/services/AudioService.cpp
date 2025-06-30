@@ -1,7 +1,7 @@
 #include "AudioService.h"
 #include "core/Logger.h"
-#include "core/SettingsStruct.h"
-#include "core/SettingsManager.h"  // Your hardware driver class
+#include "config/SettingsStruct.h"
+#include "config/SettingsManager.h"  // Your hardware driver class
 #include "drivers/audio/AudioDriverManager.h"
 
 
