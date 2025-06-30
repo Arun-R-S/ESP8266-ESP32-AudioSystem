@@ -1,29 +1,7 @@
 #pragma once
 
+#include "SupportedFeatures.h"
 #include <stdint.h>
-
-enum class SupportedFeature : uint16_t {
-     Volume,
-    Input,
-    Bass,
-    Treble,
-    Balance,
-    FrontLeft,
-    FrontRight,
-    RearLeft,
-    RearRight,
-    Center,
-    Loudness,
-    Subwoofer,
-};
-
-inline SupportedFeatures operator|(SupportedFeatures a, SupportedFeatures b) {
-    return static_cast<SupportedFeatures>(static_cast<uint16_t>(a) | static_cast<uint16_t>(b));
-}
-
-inline bool hasFeature(SupportedFeatures value, SupportedFeatures flag) {
-    return (static_cast<uint16_t>(value) & static_cast<uint16_t>(flag)) != 0;
-}
 
 class IAudioDriver {
 public:
