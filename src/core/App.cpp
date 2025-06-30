@@ -53,5 +53,5 @@ void App::Loop() {
     // Loop code
     //AddLog("App", "App running...");
     processor.ProcessSerial();
-    _wifiManager.loop();
+    _wifiManager.handle();
 }

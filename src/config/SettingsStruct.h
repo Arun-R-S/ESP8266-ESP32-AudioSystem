@@ -30,6 +30,11 @@ struct LoggerSettings {
 struct WifiSettings {
     char ssid[64] = "";
     char password[64] = "";
+    char hostname[32] = "ESP-Audio";
+    bool dhcp = true;
+    char staticIP[16] = "";
+    char gateway[16] = "";
+    char subnet[16] = "";
 };
 
 struct SettingsStruct {
@@ -40,8 +45,9 @@ struct SettingsStruct {
     LoggerSettings logger;
     DeviceConfig_t DeviceConfig;
     ButtonSettings buttonSettings;
-    // Future expansions can be added here
     WifiSettings wifiSettings;
+    // Future expansions can be added here
+    
 };
 
 extern SettingsStruct Settings; // Declare globally

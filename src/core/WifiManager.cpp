@@ -14,35 +14,37 @@ void WiFiManager::begin() {
 }
 
 void WiFiManager::loop() {
-    if (state == WiFiConnectionState::Connecting) {
-        if (WiFi.status() == WL_CONNECTED) {
-            AddLogInfo("WiFi", "Connected: %s", WiFi.localIP().toString().c_str());
-            //StatusManager.SetWiFiConnected(true);
-            state = WiFiConnectionState::Connected;
-        } else if (millis() - lastRetryTime > retryInterval) {
-            AddLogError("WiFi", "Retry failed. Switching to AP mode...");
-            startAccessPoint();
-        }
-    }
-
-    if (state == WiFiConnectionState::AccessPointMode) {
-        AccessPointManager::Instance().HandleClient();
-    }
+    
 }
 
-void WiFiManager::connectToWiFi() {
-    auto settings = Settings.wifiSettings;
-    if (strlen(settings.ssid) == 0) {
+bool WiFiManager::connectToWiFi() {
+    if (strlen(Settings.wifiSettings.ssid) == 0) {
         AddLogWarn("WiFi", "No SSID configured.");
         startAccessPoint();
-        return;
+        return false;
     }
 
-    AddLogInfo("WiFi", "Connecting to %s...", settings.ssid);
+    AddLogInfo("WiFi", "Connecting to %s...", Settings.wifiSettings.ssid);
+    WiFi.begin(Settings.wifiSettings.ssid, Settings.wifiSettings.password);
 
-    WiFi.begin(settings.ssid, settings.password);
-    state = WiFiConnectionState::Connecting;
-    lastRetryTime = millis();
+    connectStart = millis();
+    connecting = true;
+
+    int retries = 0;
+    while (WiFi.status() != WL_CONNECTED && retries < 10) {
+        delay(500);
+        retries++;
+        AddLogInfo("WifiManager", "Connecting...");
+    }
+
+    if (WiFi.status() == WL_CONNECTED) {
+        AddLogInfo("WifiManager", "Connected. IP: %s", WiFi.localIP().toString().c_str());
+        return true;
+    } else {
+        AddLogError("WifiManager", "WiFi connect failed.");
+        startAccessPoint();
+        return false;
+    }
 }
 
 void WiFiManager::startAccessPoint() {
@@ -59,4 +61,14 @@ WiFiConnectionState WiFiManager::getState() {
 
 String WiFiManager::getIP() {
     return WiFi.localIP().toString();
+}
+
+bool WiFiManager::isConnected() {
+    return WiFi.status() == WL_CONNECTED;
+}
+
+void WiFiManager::handle() {
+    if (!isConnected() && !connecting) {
+        connectToWiFi();
+    }
 }

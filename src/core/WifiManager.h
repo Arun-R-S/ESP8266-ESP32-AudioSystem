@@ -28,12 +28,19 @@ public:
     WiFiConnectionState getState();
     String getIP();
 
+    bool isConnected();
+
+    void handle();
+
 private:
-    void connectToWiFi();
+    bool connectToWiFi();
     void startAccessPoint();
     void handleConnectionResult();
 
     WiFiConnectionState state = WiFiConnectionState::Disconnected;
     unsigned long retryInterval = 10000;
     unsigned long lastRetryTime = 0;
+
+    unsigned long connectStart = 0;
+    bool connecting = false;
 };
