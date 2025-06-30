@@ -32,7 +32,7 @@ void App::Setup() {
     delay(1000);
     I2CBus i2c(BOARD_PIN_SDA, BOARD_PIN_SCL);
     i2c.Init();
-    AudioDriverManager::Instance().Init(i2c);
+    //AudioDriverManager::Instance().Init(i2c);
     // Register command sets
     RegisterI2CCommands(registry);
     RegisterAudioCommands(registry);

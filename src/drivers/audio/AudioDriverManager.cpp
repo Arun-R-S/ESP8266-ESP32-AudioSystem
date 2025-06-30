@@ -1,48 +1,29 @@
-#include "IAudioDriver.h"
-#include "drivers/audio/TDA7439Driver.h"
-//#include "drivers/audio/PT2322Driver.h"
 #include "AudioDriverManager.h"
-#include "core/SettingsManager.h"
 #include "core/Logger.h"
-#include "core/StatusManager.h"
 
-IAudioDriver* AudioDriverManager::_driver = nullptr;
+static IAudioDriver* activeDriver = nullptr;
 
-void AudioDriverManager::Init(I2CBus& bus) {
-    if (_driver) {
-        delete _driver;
-        _driver = nullptr;
-    }
-    String driver = Settings.audio.activeDriver;
-
-    if (driver == "TDA7439") {
-        _driver = new TDA7439Driver(bus);
-    } 
-    //else if (driver == "PT2322") {
-    //     _driver = new PT2322Driver(bus);
-    // } 
-    else {
-        AddLogError("AudioDriverManager", "Unknown driver: %s", driver.c_str());
-        _driver = nullptr;
-    }
-
-    if (_driver) {
-        if (!_driver->Init())
-        {
-            StatusManager::SetError("AudioDriverManager", ERROR_DRIVER_INIT_FAILED);
-        }
-        AddLogInfo("AudioDriverManager", "Loaded driver: %s", _driver->GetDriverName());
+void AudioDriverManager::RegisterDriver(IAudioDriver* driver) {
+    if (!activeDriver) {
+        activeDriver = driver;
+        AddLogInfo("AudioDriverManager", "Driver '%s' registered.", driver->GetDriverName());
     }
 }
 
-IAudioDriver* AudioDriverManager::GetDriver() {
-    return _driver;
+IAudioDriver* AudioDriverManager::GetActiveDriver() {
+    return activeDriver;
 }
 
-const char* AudioDriverManager::GetCurrentDriverName() {
-    return _driver ? _driver->GetDriverName() : "None";
+bool AudioDriverManager::SelectDriver(const char* driverName) {
+    if (activeDriver && strcmp(activeDriver->GetDriverName(), driverName) == 0) {
+        AddLogInfo("AudioDriverManager", "Driver '%s' selected.", driverName);
+        return true;
+    }
+    AddLogError("AudioDriverManager", "Driver '%s' not found.", driverName);
+    return false;
 }
 
-const char* AudioDriverManager::GetActiveDriver() {
-    return _driver ? _driver->GetDriverName() : "None";
+bool AudioDriverManager::HasFeature(AudioFeature feature) {
+    if (!activeDriver) return false;
+    return hasFeature(activeDriver->getSupportedFeatures(), feature);
 }
