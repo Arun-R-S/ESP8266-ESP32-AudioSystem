@@ -28,8 +28,8 @@ struct LoggerSettings {
 };
 
 struct WifiSettings {
-    String ssid;
-    String password;
+    char ssid[64] = "";
+    char password[64] = "";
 };
 
 struct SettingsStruct {

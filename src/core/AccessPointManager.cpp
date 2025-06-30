@@ -26,8 +26,12 @@ void HandleSave() {
     String ssid = server.arg("ssid");
     String pass = server.arg("password");
 
-    Settings.wifiSettings.ssid = ssid;
-    Settings.wifiSettings.password = pass;
+    // Safely copy from String to char array
+    strncpy(Settings.wifiSettings.ssid, ssid.c_str(), sizeof(Settings.wifiSettings.ssid) - 1);
+    Settings.wifiSettings.ssid[sizeof(Settings.wifiSettings.ssid) - 1] = '\0'; // Null terminate just in case
+
+    strncpy(Settings.wifiSettings.password, pass.c_str(), sizeof(Settings.wifiSettings.password) - 1);
+    Settings.wifiSettings.password[sizeof(Settings.wifiSettings.password) - 1] = '\0'; // Null terminate
     if(SettingsManager::Instance().SaveSettings())
     {
         server.send(200, "text/html", "<h3>Settings saved. Restart device.</h3>");

@@ -32,15 +32,15 @@ void WiFiManager::loop() {
 
 void WiFiManager::connectToWiFi() {
     auto settings = Settings.wifiSettings;
-    if (settings.ssid.length() == 0) {
+    if (strlen(settings.ssid) == 0) {
         AddLogWarn("WiFi", "No SSID configured.");
         startAccessPoint();
         return;
     }
 
-    AddLogInfo("WiFi", "Connecting to %s...", settings.ssid.c_str());
+    AddLogInfo("WiFi", "Connecting to %s...", settings.ssid);
 
-    WiFi.begin(settings.ssid.c_str(), settings.password.c_str());
+    WiFi.begin(settings.ssid, settings.password);
     state = WiFiConnectionState::Connecting;
     lastRetryTime = millis();
 }
