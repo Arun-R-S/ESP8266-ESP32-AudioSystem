@@ -1,5 +1,4 @@
 #include "AccessPointManager.h"
-#include <WiFi.h>
 #include "core/Logger.h"
 
 void AccessPointManager::start() {
@@ -8,10 +7,10 @@ void AccessPointManager::start() {
 
     if (result) {
         IPAddress IP = WiFi.softAPIP();
-        AddLogInfo(LOG_WIFI, "AP Started. SSID: %s | IP: %s", ssid.c_str(), IP.toString().c_str());
+        AddLogInfo("AccessPointManager", "AP Started. SSID: %s | IP: %s", ssid.c_str(), IP.toString().c_str());
         active = true;
     } else {
-        AddLogError(LOG_WIFI, "Failed to start Access Point.");
+        AddLogError("AccessPointManager", "Failed to start Access Point.");
         active = false;
     }
 }
@@ -19,7 +18,7 @@ void AccessPointManager::start() {
 void AccessPointManager::stop() {
     if (active) {
         WiFi.softAPdisconnect(true);
-        AddLogInfo(LOG_WIFI, "Access Point stopped.");
+        AddLogInfo("AccessPointManager", "Access Point stopped.");
         active = false;
     }
 }

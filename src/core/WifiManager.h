@@ -1,6 +1,12 @@
 #pragma once
 
-enum class WiFiState {
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+#else
+#include <WiFi.h>
+#endif
+
+enum class WiFiConnectionState {
     DISCONNECTED,
     CONNECTING,
     CONNECTED,
@@ -12,13 +18,13 @@ public:
     void begin();
     void handle();
     bool isConnected();
-    WiFiState getState() { return state; }
+    WiFiConnectionState getState() { return state; }
 
 private:
     bool connectToWiFi();
     void startAPMode();
 
-    WiFiState state = WiFiState::DISCONNECTED;
+    WiFiConnectionState state = WiFiConnectionState::DISCONNECTED;
     unsigned long connectStartTime = 0;
     const unsigned long connectTimeout = 15000; // 15 seconds
 };
