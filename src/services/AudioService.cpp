@@ -25,13 +25,13 @@ uint8_t AudioService::GetVolume() {
 
 void AudioService::ApplyVolume() {
     AddLogDebug("AudioService", "Apply Volume Start");
-    auto* driver = AudioDriverManager::Instance().GetActiveDriver();
-    if (driver != nullptr) {
-        //driver->SetVolume(Settings.audio.volume);
-        AddLogDebug("AudioService", "Apply Volume End");
-    } else {
-        AddLogError("AudioService", "No active driver. Cannot set volume.");
-    }
+    // auto* driver = AudioDriverManager::Instance().GetActiveDriver();
+    // if (driver != nullptr) {
+    //     //driver->SetVolume(Settings.audio.volume);
+    //     AddLogDebug("AudioService", "Apply Volume End");
+    // } else {
+    //     AddLogError("AudioService", "No active driver. Cannot set volume.");
+    // }
 }
 
 // Same pattern for input

@@ -1,21 +1,28 @@
 #pragma once
 
 #include "AudioFeature.h"
+#include "core/Logger.h"
 
 class IAudioDriver {
 public:
-    virtual ~IAudioDriver() {}
-
     virtual const char* GetDriverName() = 0;
-    virtual bool begin() = 0;
+    virtual bool Init() = 0;
 
-    // Capability Advertisement
-    virtual AudioFeature getSupportedFeatures() { return AudioFeature::None; }
+    virtual bool SetVolume(uint8_t value) { LogFunctionNotAvailable("SetVolume"); return false; }
+    virtual bool SetInput(uint8_t input) { LogFunctionNotAvailable("SetInput"); return false; }
+    virtual bool SetBass(int8_t value) { LogFunctionNotAvailable("SetBass"); return false; }
+    virtual bool SetTreble(int8_t value) { LogFunctionNotAvailable("SetTreble"); return false; }
+    virtual bool SetBalance(int8_t value) { LogFunctionNotAvailable("SetBalance"); return false; }
+    virtual bool Mute() { LogFunctionNotAvailable("Mute"); return false; }
 
-    // Functional APIs
-    virtual bool SetVolume(int volume) { return false; }
-    virtual bool SetTone(int bass, int middle, int treble) { return false; }
-    virtual bool SetLoudness(bool enable, uint8_t attenuation = 0) { return false; }
-    virtual bool SetInput(uint8_t input) { return false; }
-    virtual bool SetSpeakerLevels(int fl, int fr, int rl, int rr, int sub) { return false; }
+    virtual AudioFeature GetSupportedFeatures() { return AudioFeature::None; }
+
+    virtual bool SupportsFeature(AudioFeature feature) {
+        return hasFeature(GetSupportedFeatures(), feature);
+    }
+
+protected:
+    void LogFunctionNotAvailable(const char* function) {
+        AddLogError("IAudioDriver", "[%s] Function '%s' not available", GetDriverName(), function);
+    }
 };

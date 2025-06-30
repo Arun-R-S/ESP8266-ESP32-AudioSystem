@@ -6,7 +6,8 @@ class AudioDriverManager {
 public:
     static void RegisterDriver(IAudioDriver* driver);
     static IAudioDriver* GetActiveDriver();
-    static bool SelectDriver(const char* driverName);
-
     static bool HasFeature(AudioFeature feature);
+
+private:
+    static IAudioDriver* activeDriver;
 };

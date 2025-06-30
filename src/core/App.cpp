@@ -10,7 +10,6 @@
 #include "handlers/SettingsCommands.h"
 #include "SettingsManager.h"
 #include "ResponseManager.h"
-#include "drivers/audio/AudioDriverManager.h"
 
 
 //TDA7439Driver audio(i2c, 0x44);
