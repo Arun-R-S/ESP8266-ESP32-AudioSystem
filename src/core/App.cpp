@@ -11,6 +11,8 @@
 #include "config/SettingsManager.h"
 #include "ResponseManager.h"
 #include "core/WifiManager.h"
+#include "ui/WebServerManager.h"
+#include <ESPAsyncWebServer.h>
 
 //TDA7439Driver audio(i2c, 0x44);
 
@@ -20,6 +22,8 @@ CommandProcessor processor(registry);
 ResponseManager responseManger;
 
 WiFiManager _wifiManager;
+
+AsyncWebServer serve(80);
 
 void App::Setup() {
     // Initialization code
@@ -34,6 +38,8 @@ void App::Setup() {
     _wifiManager.begin();
     I2CBus i2c(BOARD_PIN_SDA, BOARD_PIN_SCL);
     i2c.Init();
+
+    WebServerManager::Begin(serve);
     //AudioDriverManager::Instance().Init(i2c);
     // Register command sets
     RegisterI2CCommands(registry);
