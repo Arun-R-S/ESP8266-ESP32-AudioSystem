@@ -4,6 +4,8 @@
 #include "web/pages/Page_Home.h"
 #include "core/Logger.h"
 #include "config/SettingsManager.h"
+#include "web/routes/WebRouter_Wifi.h"
+#include "web/routes/WebRouter_Sys.h"
 
 void WebServerManager::Begin(AsyncWebServer &server) {
     // ✅ Home page
@@ -52,7 +54,8 @@ void WebServerManager::Begin(AsyncWebServer &server) {
             request->send(200, "text/html", "<h2>SSID cannot be empty</h2>");
         }
     });
-
+    RegisterWifiRoutes(server);
+    RegisterSysRoutes(server);
     server.begin();
     AddLogInfo("WebServerManager", "Web UI Started.");
 
