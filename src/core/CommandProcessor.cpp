@@ -3,6 +3,21 @@
 
 CommandProcessor::CommandProcessor(CommandRegistry& reg) : registry(reg) {}
 
+std::vector<CommandHandler*> CommandProcessor::handlers;
+
+void CommandProcessor::RegisterHandler(CommandHandler* handler) {
+    handlers.push_back(handler);
+}
+
+String CommandProcessor::ExecuteCommand(const String& command) {
+    for (auto* handler : handlers) {
+        if (handler->CanHandle(command)) {
+            return handler->HandleCommand(command);
+        }
+    }
+    return "Unknown command";
+}
+
 void CommandProcessor::ProcessSerial() {
     if (Serial.available()) {
         String input = Serial.readStringUntil('\n');
